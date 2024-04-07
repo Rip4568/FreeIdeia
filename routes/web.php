@@ -23,8 +23,9 @@ Route::get('/', function () {
     ];
     return view('welcome', $data);
 });
-
-
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+Route::post('/login', [UserController::class, 'login'])->name('users.login');
+Route::get('/login', [UserController::class, 'showLogin'])->name('users.showLogin');
 
 Route::resource('posts', PostController::class);
 

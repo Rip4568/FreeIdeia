@@ -14,7 +14,7 @@
 </head>
 <body>
   @include('layouts.navbar')
-  <main>
+  <main id="root">
     @yield('content')
   </main>
 

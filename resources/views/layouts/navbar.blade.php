@@ -7,10 +7,15 @@
       <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
         <li><a>About</a></li>
         @guest
-        <li><a href={{ route('users.create', ['id'=>1]) }}>Login</a></li>
+        <li><a href={{ route('users.create') }}>Login</a></li>
         @endguest
         @auth
-        <li><a>Logout</a></li>
+        <li>
+          <form action="{{ route('logout') }}" method="post">
+            @csrf
+            <a class="btn btn-outline btn-error">Logout</a>
+          </form>
+        </li>
         @endauth
       </ul>
     </div>

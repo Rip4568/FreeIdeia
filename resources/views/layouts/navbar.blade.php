@@ -13,7 +13,7 @@
         <li>
           <form action="{{ route('logout') }}" method="post">
             @csrf
-            <a class="btn btn-outline btn-error">Logout</a>
+            <a class="btn btn-outline btn-error btn-sm ">Logout</a>
           </form>
         </li>
         @endauth

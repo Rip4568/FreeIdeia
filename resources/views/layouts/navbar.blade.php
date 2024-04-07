@@ -5,14 +5,18 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
       </div>
       <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-        <li><a>Homepage</a></li>
-        <li><a>Portfolio</a></li>
         <li><a>About</a></li>
+        @guest
+        <li><a href={{ route('users.create', ['id'=>1]) }}>Login</a></li>
+        @endguest
+        @auth
+        <li><a>Logout</a></li>
+        @endauth
       </ul>
     </div>
   </div>
   <div class="navbar-center">
-    <a class="btn btn-ghost btn-lg text-xl">FreeIdeia</a>
+    <a class="btn btn-ghost btn-lg text-xl" href="/">FreeIdeia</a>
   </div>
   <div class="navbar-end">
     <label class="input input-bordered flex items-center gap-2">

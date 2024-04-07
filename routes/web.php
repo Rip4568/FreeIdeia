@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
+use App\Models\Post;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +18,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $data = [
+        "posts" => Post::all()
+    ];
+    return view('welcome', $data);
 });
+
+
+
+Route::resource('posts', PostController::class);
+
+Route::resource('users', UserController::class);

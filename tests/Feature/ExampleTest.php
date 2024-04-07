@@ -16,4 +16,10 @@ class ExampleTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function test_the_aplication_return_exact_content(): void 
+    {
+        $response = $this->get('/');
+        $response->assertContent('')->contains();
+    }
 }

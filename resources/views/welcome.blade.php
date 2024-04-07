@@ -15,11 +15,9 @@
     <body>
         <div>
             <h1>HELLO WORLD</h1>
-            @isset($posts)
-                @foreach ($posts as $post)
-                    {{$post->title}}
-                @endforeach
-            @endisset
+            @foreach ($posts as $post)
+                {{$post->title}}
+            @endforeach
         </div>
     </body>
 </html>

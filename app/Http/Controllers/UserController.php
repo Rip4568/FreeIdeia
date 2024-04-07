@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -11,6 +12,41 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $rememberMe = $request['remember-me'] ? true : false;
+
+        dd($credentials);
+        // Tentar autenticar o usuário
+        if (Auth::attempt($credentials, $rememberMe)) {
+            // Login bem-sucedido, redirecionar para a página desejada
+            return response()->redirectTo('/');
+        }
+        // Login falhou, retornar um erro
+        return back()->withErrors([
+            'email' => 'As credenciais fornecidas não são válidas.',
+        ]);
+    }
+
+    public function logout(Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
+
+    public function showLogin(Request $request)
+    {
+        return view('auth.login');
+    }
+
     public function index()
     {
         //
@@ -32,24 +68,20 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:3',
+            'email' => 'required|email|unique:users|max:255',
+            'password' => 'required|min:3|confirmed',
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password'])
         ]);
 
-        $data = [
-            'message' => 'usuario criado com sucesso',
-            'user' => $user
-        ];
 
-        return view('posts.index', $data);
+        return redirect()->route('users.showLogin')->with('success', 'Conta criada com sucesso. Faça o login para acessar.');
     }
 
     /**

@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8.0
+    DATABASE_PASSWORD: 'root'
+    DATABASE_NAME: 'freeideia'
+
+  apache:
+    image: apache:2.4
+  message:
+    image: redis
+    ports:
+      -6379:6379

@@ -22,7 +22,6 @@ class UserController extends Controller
 
         $rememberMe = $request['remember-me'] ? true : false;
 
-        dd($credentials);
         // Tentar autenticar o usuário
         if (Auth::attempt($credentials, $rememberMe)) {
             // Login bem-sucedido, redirecionar para a página desejada

@@ -19,6 +19,7 @@
     @error('user_id')
       <div class="text-red-500">{{ $message }}</div>
     @enderror
+    <input type="file" name="banner" class="file-input file-input-bordered file-input-secondary w-full max-w-xs" />
     <button class="btn btn-primary w-60" type="submit">Create POST</button>
   </div>
 </form>

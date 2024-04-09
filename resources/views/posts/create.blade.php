@@ -1,0 +1,25 @@
+@extends('layouts.main')
+
+@section('title', 'Crie seu post!')
+
+@section('content')
+<form action="{{ route('posts.store') }}" method="POST">
+  @csrf
+  <div class="artboard-demo p-4 gap-2 min-h-screen">
+    @error('title')
+      <div class="text-red-500">{{ $message }}</div>
+    @enderror
+    <label class="input input-bordered flex items-center gap-2">
+      <input type="text" class="grow" name="title" autocomplete="off" placeholder="Titulo do post" value="{{ old('title') }}" />
+    </label>
+    @error('content')
+      <div class="text-red-500">{{ $message }}</div>
+    @enderror
+    <textarea name="content" class="textarea textarea-secondary" rows="3" cols="30" placeholder="Conteudo do post...">{{ old('content') }}</textarea>
+    @error('user_id')
+      <div class="text-red-500">{{ $message }}</div>
+    @enderror
+    <button class="btn btn-primary w-60" type="submit">Create POST</button>
+  </div>
+</form>
+@endsection

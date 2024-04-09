@@ -11,5 +11,10 @@
         <p><a href='{{ route('users.create') }}' class="link link-success">Registre-se</a> para publicar sua Idea</p>
       </div>
     </div>
-  </div>    
+</div>
+
+@foreach ($posts as $post)
+  <p>{{$post->title}}</p>
+@endforeach
+
 @endsection

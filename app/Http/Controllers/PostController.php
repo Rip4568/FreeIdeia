@@ -32,16 +32,20 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-
-        $validatedData = $request->validate([
-            'title|required|min:3',
-            'content',
-            'user_id',
+        
+        $validated = $request->validate([
+            'title' => 'required|min:3',
+            'user_id' => 'required' //quem coloca é o middleware
         ]);
 
-        dd($validatedData);
+        $post = Post::create([
+            'title' => $validated['title'],
+            'content' => $validated['content'] ?? null,
+            'user_id' => $validated['user_id']
+        ]);
 
-        return view('posts.index');
+
+        return redirect()->route('posts.create')->with('success', 'Posts criado com sucesso.');
     }
 
     /**

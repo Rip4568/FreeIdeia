@@ -24,7 +24,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -32,10 +32,16 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        return response()->json(
-            ["success" => 201]
-        );
+
+        $validatedData = $request->validate([
+            'title|required|min:3',
+            'content',
+            'user_id',
+        ]);
+
+        dd($validatedData);
+
+        return view('posts.index');
     }
 
     /**

@@ -5,15 +5,20 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
       </div>
       <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-        <li><a>About</a></li>
+        <li>
+          <a class="btn btn-outline btn-acciant btn-sm">About</a>
+        </li>
         @guest
         <li><a href={{ route('users.showLogin') }}>Login</a></li>
         @endguest
         @auth
-        <li class="mx-auto w-full">
-          <form action="{{ route('logout') }}" method="post">
+        <li>
+          <a class="btn btn-outline btn-success btn-sm" href="{{ route('posts.create') }}">New Post</a>
+        </li>
+        <li>
+          <form action="{{ route('logout') }}" method="post" class="w-full">
             @csrf
-            <button type="submit" class="btn btn-outline btn-error btn-sm w-auto">Logout</button>
+            <button type="submit" class="btn btn-outline btn-error btn-sm">Logout</button>
           </form>
         </li>
         @endauth

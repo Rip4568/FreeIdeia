@@ -27,6 +27,6 @@ Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/login', [UserController::class, 'login'])->name('users.login');
 Route::get('/login', [UserController::class, 'showLogin'])->name('users.showLogin');
 
-Route::resource('posts', PostController::class);
+Route::resource('posts', PostController::class)->middleware(['auth', 'add.user.id']);//['store', 'destroy', 'edit', 'update', 'edit', 'show']
 
 Route::resource('users', UserController::class);

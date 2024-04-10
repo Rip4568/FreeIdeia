@@ -8,11 +8,13 @@
       <div class="max-w-md">
         <h1 class="text-5xl font-bold">Hello there</h1>
         <p class="py-6">Seja muito bem vindo ao meu projeto chamado de: FreeIdeia, seu intuito é apenas divulgar suas opnioes/ideias com todo o publico! sem restrições, banimentos ou censuras, sinta-se livre para expor o que quer!</p>
+        @guest()
         <p><a href='{{ route('users.create') }}' class="link link-success">Registre-se</a> para publicar sua Idea</p>
+        @endguest
       </div>
     </div>
 </div>
-{{-- style="display: flex; justify-content: center; align-content: center" --}}
+
 <div class="stats shadow w-full flex flex-wrap justify-center items-center" >
   <div class="stat">
     <div class="stat-figure text-secondary">
@@ -40,9 +42,9 @@
   
 </div>
 
-<section class="flex gap-6 w-full justify-center mx-6 mt-6">
+<section class="flex gap-6 w-full justify-center mx-6 mt-6 mb-6">
   @foreach ($posts as $post)
-  <div class="card w-96 bg-base-200 shadow-xl">
+  <div class="card w-96 bg-neutral shadow-xl">
     <div class="card-body">
       <h2 class="card-title">{{$post->title}}</h2>
       <i class="card-title">Por: {{$post->user->name}}</i>

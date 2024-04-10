@@ -3,6 +3,7 @@
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Models\Post;
+use App\Models\User;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +20,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $data = [
-        "posts" => Post::all()
+        "posts" => Post::orderBy('created_at', 'desc')->take(6)->get(),
+        "posts_quantity" => Post::all()->count(),
+        "users_quantity" => User::all()->count()
     ];
     return view('welcome', $data);
 });

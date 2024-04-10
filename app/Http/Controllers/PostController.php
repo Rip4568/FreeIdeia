@@ -54,6 +54,8 @@ class PostController extends Controller
     public function show(Post $post)
     {
         //
+        $post->clicked = $post->clicked + 1;
+        $post->save();
         return response()->json(
             [
                 "status" => 200,

@@ -22,7 +22,8 @@ Route::get('/', function () {
     $data = [
         "posts" => Post::orderBy('created_at', 'desc')->take(6)->get(),
         "posts_quantity" => Post::all()->count(),
-        "users_quantity" => User::all()->count()
+        "users_quantity" => User::all()->count(),
+        "posts_clicked_quantity" => Post::sum('clicked'),
     ];
     return view('welcome', $data);
 });
@@ -30,6 +31,6 @@ Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/login', [UserController::class, 'login'])->name('users.login');
 Route::get('/login', [UserController::class, 'showLogin'])->name('users.showLogin');
 
-Route::resource('posts', PostController::class)->middleware(['auth', 'add.user.id']);//['store', 'destroy', 'edit', 'update', 'edit', 'show']
+Route::resource('posts', PostController::class)->middleware(['auth', 'add.user.id']);//->only(['show'])->middleware('increment.post.clicked');
 
 Route::resource('users', UserController::class);

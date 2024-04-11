@@ -16,7 +16,7 @@
 </div>
 
 
-<div class="stats shadow w-full flex flex-wrap justify-center items-center" >
+<div class="stats shadow w-full flex flex-wrap" >
   <div class="stat">
     <div class="stat-figure text-secondary">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -43,19 +43,17 @@
 </div>
 
 <h1 class="text-center text-5xl">Veja alguns exemplos dos posts mais recentes</h1>
-<section class="flex gap-6 w-full justify-center mx-6 mt-6 mb-6">
-  
+<section class="flex gap-6 wrap flex-wrap mx-6 mt-6 mb-6">
   @foreach ($posts as $post)
-  <div class="card w-96 bg-neutral shadow-xl">
-    <div class="card-body">
-      <h2 class="card-title">{{$post->title}}</h2>
-      <i class="card-title">Por: {{$post->user->name}}</i>
-      <div class="card-actions justify-end">
-        <button class="btn btn-secondary">Leia o conteudo</button>
+    <div class="card w-96 bg-neutral shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title">{{$post->title}}</h2>
+        <i class="card-title">Por: {{$post->user->name}}</i>
+        <div class="card-actions justify-end">
+          <a class="btn btn-secondary" href="{{ route('posts.show', ['post'=>$post]) }}">Leia o conteudo</a>
+        </div>
       </div>
     </div>
-  </div>
-@endforeach
+  @endforeach
 </section>
-
 @endsection

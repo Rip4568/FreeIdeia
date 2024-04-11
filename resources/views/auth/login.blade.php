@@ -27,6 +27,7 @@
       </div>
     </div>
     <button class="btn btn-secondary w-60 rounded-full" type="submit">Login</button>
+    <p>Esqueceu sua senha? <a href="#em-construcao" class="link link-success">recupere-a</a></p>
     <p>Não tem uma conta ainda? <a href="{{ route('users.create') }}" class="link link-success">inscreva-se</a></p>
   </div>
 </form>

@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Models\Post;
 use App\Models\User;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,11 +26,13 @@ Route::get('/', function () {
         "posts_clicked_quantity" => Post::sum('clicked'),
     ];
     return view('welcome', $data);
-});
+})->name('welcome');
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/login', [UserController::class, 'login'])->name('users.login');
 Route::get('/login', [UserController::class, 'showLogin'])->name('users.showLogin');
 
-Route::resource('posts', PostController::class)->middleware(['auth', 'add.user.id']);//->only(['show'])->middleware('increment.post.clicked');
+Route::resource('posts', PostController::class)->middleware(['auth', 'add.user.id']);
 
 Route::resource('users', UserController::class);
+
+Route::resource('posts.comments', CommentController::class)->only(['store', 'destroy'])->middleware(['auth', 'add.user.id']);

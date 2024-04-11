@@ -15,12 +15,12 @@
     @error('content')
       <div class="text-red-500">{{ $message }}</div>
     @enderror
-    <textarea name="content" class="textarea textarea-secondary" rows="3" cols="30" placeholder="Conteudo do post...">{{ old('content') }}</textarea>
+    <textarea name="content" class="textarea textarea-secondary" rows="6" cols="50" placeholder="Conteudo do post...">{{ old('content') }}</textarea>
     @error('user_id')
       <div class="text-red-500">{{ $message }}</div>
     @enderror
     <input type="file" name="banner" class="file-input file-input-bordered file-input-secondary w-full max-w-xs" />
-    <button class="btn btn-primary w-60" type="submit">Create POST</button>
+    <button class="btn btn-success w-60" type="submit">Create POST</button>
   </div>
 </form>
 @endsection

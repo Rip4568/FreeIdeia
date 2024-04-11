@@ -35,8 +35,10 @@ class PostController extends Controller
         
         $validated = $request->validate([
             'title' => 'required|min:3',
-            'user_id' => 'required' //quem coloca é o middleware
+            'user_id' => 'required', //quem coloca é o middleware
+            'content' => 'nullable'
         ]);
+
 
         $post = Post::create([
             'title' => $validated['title'],
@@ -56,13 +58,10 @@ class PostController extends Controller
         //
         $post->clicked = $post->clicked + 1;
         $post->save();
-        return response()->json(
-            [
-                "status" => 200,
-                "messgae" => "find an especific post",
-                "data" => $post
-            ]
-        );
+        $data = [
+            'post' => $post,
+        ];
+        return view('posts.show', $data);
     }
 
     /**
@@ -70,7 +69,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.edit', ['post' => $post]);
     }
 
     /**
@@ -78,7 +77,19 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|min:3',
+            'user_id' => 'required', //quem coloca é o middleware
+            'content' => 'nullable'
+        ]);
+
+        $post->update([
+            'title' => $validated['title'],
+            'content' => $validated['content'] ?? null,
+            'user_id' => $validated['user_id']
+        ]);
+
+        return redirect()->route('posts.show', ['post' => $post])->with('success', 'Post atualizado com sucesso.');
     }
 
     /**
@@ -86,6 +97,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return redirect()->route('welcome')->with('success', 'Post deletado com sucesso.');
     }
 }

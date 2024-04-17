@@ -15,7 +15,7 @@ class PostController extends Controller
         //
         return response()->json([
             "success" => 200,
-            "data" => Post::all()
+            "data" => Post::paginate(6),
         ]);
     }
 
@@ -99,5 +99,14 @@ class PostController extends Controller
     {
         $post->delete();
         return redirect()->route('welcome')->with('success', 'Post deletado com sucesso.');
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $posts = Post::where('title', 'like', '%' . $search . '%')
+            ->orWhere('content', 'like', '%' . $search . '%')
+            ->paginate(6);
+        return view('welcome', ['posts' => $posts]);
     }
 }

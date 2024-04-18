@@ -35,4 +35,6 @@ Route::resource('posts', PostController::class)->middleware(['auth', 'add.user.i
 
 Route::resource('users', UserController::class);
 
-Route::resource('posts.comments', CommentController::class)->only(['store', 'destroy'])->middleware(['auth', 'add.user.id']);
+Route::resource('posts.comments', CommentController::class)
+    ->only(['store', 'destroy'])
+    ->middleware(['auth', 'add.user.id']);

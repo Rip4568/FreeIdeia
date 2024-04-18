@@ -5,7 +5,7 @@
 
 @section('content')
   <section class="flex flex-col place-content-center place-items-center container content-post p-6 w-full">
-    <div class="post card bg-neutral w-1/2 p-6">
+    <div class="post card bg-neutral p-6">
       <h1 class="text-5xl text-center">{{ $post->title }}</h1>
       <br>
       <p>Por: <i><a href="#todos-os-posts-deste-usuario">{{ $post->user->name }}</a></i></p>
@@ -29,21 +29,31 @@
     </section>
     
   </section>
-<section class="comments w-full p-12 rouded">
-  <h1>Comentarios:</h1>
-  @foreach ($post->comments ?? [] as $comment)
-    <div class="bg-neutral p-4">
-      <p class="text-sm"><strong>{{ $comment->user->name }}</strong>: {{ $comment->content }}</p>
-      @if (Auth::user()->id == $comment->user_id)
-        <form action="{{ route('posts.comments.destroy', ['post' => $post, 'comment' => $comment]) }}" method="post">
-        @csrf
-      @method('DELETE')
-      <button type="submit" class="btn btn-error btn-sm">X</button>
-  </form>
-      @endif
+
+  <section class="comments w-full p-12 rounded">
+    <h1 class="text-3xl font-bold mb-6">Comentários:</h1>
+    <div class="comments-list">
+       @foreach ($post->comments as $comment)
+         <div class="comment bg-neutral p-4 rounded-lg mb-4">
+           <div class="comment-header flex justify-between items-center">
+             <div class="comment-author">
+               <span class="font-semibold">{{ $comment->user->name }}</span>
+             </div>
+             @if (Auth::user()->id == $comment->user_id)
+               <div class="comment-actions">
+                 <form action="{{ route('posts.comments.destroy', ['post' => $post, 'comment' => $comment]) }}" method="post">
+                   @csrf
+                   @method('DELETE')
+                   <button type="submit" class="btn btn-error btn-sm">Excluir</button>
+                 </form>
+               </div>
+             @endif
+           </div>
+           <p class="comment-content">{{ $comment->content }}</p>
+         </div>
+       @endforeach
     </div>
-  @endforeach
-</section>
+   </section>
 
   <dialog id="my_modal_1" class="modal">
     <div class="modal-box">

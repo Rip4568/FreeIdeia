@@ -60,7 +60,8 @@
       <h3 class="font-bold text-lg">Deletar <i>{{ $post->title }}</i>?</h3>
       <p class="py-4">Você tem certeza que quer deletar ?</p>
       <div class="modal-action">
-        <form method="post" action="{{ route('posts.destroy', ['post' => $post]) }}">
+        <form method="post" 
+          action="{{ route('posts.destroy', ['post' => $post]) }}">
           @csrf
           @method('DELETE')
           {{-- esse formulario vai enviar requisição para deletar o post --}}
@@ -73,4 +74,6 @@
       </div>
     </div>
   </dialog>
+  <!-- Dentro de views/page/posts/show.blade.php -->
+  @vite(['resources/js/posts/show.js'])
 @endsection

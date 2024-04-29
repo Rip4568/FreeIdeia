@@ -64,7 +64,7 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, Post $post, Comment $comment)
     {
         $validatedData = $request->validate([
             'content' => 'required|min:1',
@@ -73,7 +73,7 @@ class CommentController extends Controller
         $comment->content = $validatedData['content'];
         $comment->save();
 
-        return redirect()->route('posts.show', ['post' => $comment->post]);
+        return redirect()->route('posts.show', ['post' => $post]);
     }
 
     /**

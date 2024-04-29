@@ -11,6 +11,9 @@
         @endguest
         @auth
         <li>
+          <a class="btn btn-outline btn-acciant btn-sm">Ideias</a>
+        </li>
+        <li>
           <a class="btn btn-outline btn-acciant btn-sm">Perfil</a>
         </li>
         <li>

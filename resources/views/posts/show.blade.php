@@ -40,40 +40,39 @@
                <span class="font-semibold">{{ $comment->user->name }}</span>
              </div>
              @if (Auth::user()->id == $comment->user_id)
-               <div class="comment-actions">
+               <div class="comment-actions flex">
                  <form action="{{ route('posts.comments.destroy', ['post' => $post, 'comment' => $comment]) }}" method="post">
                    @csrf
                    @method('DELETE')
                    <button type="submit" class="btn btn-error btn-sm">Excluir</button>
                  </form>
+                 <button class="btn btn-warning btn-sm" onclick="my_modal_{{ $comment->id }}.showModal()" >Editar</button>
                </div>
              @endif
            </div>
            <p class="comment-content">{{ $comment->content }}</p>
          </div>
+         <dialog id="my_modal_{{ $comment->id }}" class="modal">
+          <div class="modal-box">
+            <h3 class="font-bold text-lg gap-5 flex space-between">Editar Comentario 
+              <form method="dialog">
+                <button type="submit" class="btn btn-primary">Close</button>
+              </form>
+            </h3>
+            <div class="modal-action" style="justify-content: start">
+              <form method="post" action="{{ route('posts.comments.update', ['post' => $post, 'comment' => $comment]) }}">
+                @csrf
+                @method('PUT')
+                <textarea name="content" class="textarea textarea-secondary" rows="3" cols="50">{{ $comment->content }}</textarea>
+                <br>
+                <button type="submit" class="btn btn-primary">Atualizar</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
        @endforeach
     </div>
    </section>
-
-  <dialog id="my_modal_1" class="modal">
-    <div class="modal-box">
-      <h3 class="font-bold text-lg">Deletar <i>{{ $post->title }}</i>?</h3>
-      <p class="py-4">Você tem certeza que quer deletar ?</p>
-      <div class="modal-action">
-        <form method="post" 
-          action="{{ route('posts.destroy', ['post' => $post]) }}">
-          @csrf
-          @method('DELETE')
-          {{-- esse formulario vai enviar requisição para deletar o post --}}
-          <button type="submit" class="btn btn-error">Sim</button>
-        </form>
-        <form method="dialog">
-          {{-- esse formulario é para fechar o modal sem ação --}}
-          <button class="btn btn-success">Não</button>
-        </form>
-      </div>
-    </div>
-  </dialog>
   <!-- Dentro de views/page/posts/show.blade.php -->
   @vite(['resources/js/posts/show.js'])
 @endsection

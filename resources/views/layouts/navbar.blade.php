@@ -11,7 +11,7 @@
         @endguest
         @auth
         <li>
-          <a class="btn btn-outline btn-acciant btn-sm">Ideias</a>
+          <a href="{{ route('posts.index') }}" class="btn btn-outline btn-acciant btn-sm">Ideias</a>
         </li>
         <li>
           <a class="btn btn-outline btn-acciant btn-sm">Perfil</a>

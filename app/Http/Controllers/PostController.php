@@ -13,14 +13,13 @@ class PostController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search') ?? null;
-        //caso tenha algum valor em search, fdaça a busca, caso contrario não faça
         $posts = Post::when($search, function ($query) use ($search)  {
             return $query->where('title', 'like', '%' . strtolower($search) . '%')
                      ->orWhere('title', 'like', '%' . strtoupper($search) . '%')
                      ->orWhere('content', 'like', '%' . $search . '%');
         })
         ->orderBy('created_at', 'desc')
-        ->paginate(6);
+        ->paginate(12);
         $data = [
             "posts" => $posts,
             "status" => 200

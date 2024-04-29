@@ -10,13 +10,22 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        return response()->json([
-            "success" => 200,
-            "data" => Post::paginate(6),
-        ]);
+        $search = $request->input('search') ?? null;
+        //caso tenha algum valor em search, fdaça a busca, caso contrario não faça
+        $posts = Post::when($search, function ($query) use ($search)  {
+            return $query->where('title', 'like', '%' . strtolower($search) . '%')
+                     ->orWhere('title', 'like', '%' . strtoupper($search) . '%')
+                     ->orWhere('content', 'like', '%' . $search . '%');
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(6);
+        $data = [
+            "posts" => $posts,
+            "status" => 200
+        ];
+        return view('posts.index', $data);
     }
 
     /**
@@ -40,7 +49,7 @@ class PostController extends Controller
         ]);
 
 
-        $post = Post::create([
+        Post::create([
             'title' => $validated['title'],
             'content' => $validated['content'] ?? null,
             'user_id' => $validated['user_id']

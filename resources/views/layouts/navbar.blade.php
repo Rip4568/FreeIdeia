@@ -33,12 +33,14 @@
     <a class="btn btn-ghost btn-lg text-xl" href="/">FreeIdeia</a>
   </div>
   <div class="navbar-end">
+    <form action="{{ route('posts.index') }}" method="get">
     <label class="input input-bordered flex items-center gap-2">
-      <input type="text" class="grow" placeholder="Search" />
-      <button class="btn btn-ghost">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-      </button>
-    </label>
+        <input type="text" class="grow" name="search" required placeholder="Search" value="{{ request('search') }}" />
+        <button class="btn btn-ghost" type="submit">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+        </button>
+      </label>
+    </form>
     
     <button class="btn btn-ghost btn-circle">
       <div class="indicator">

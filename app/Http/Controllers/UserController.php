@@ -11,7 +11,6 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -87,7 +86,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return view('users.show', ['user' => $user]);
     }
 
     /**

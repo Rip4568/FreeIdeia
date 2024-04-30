@@ -27,13 +27,19 @@ Route::get('/', function () {
     ];
     return view('welcome', $data);
 })->name('welcome');
-Route::post('/logout', [UserController::class, 'logout'])->name('logout');
-Route::post('/login', [UserController::class, 'login'])->name('users.login');
-Route::get('/login', [UserController::class, 'showLogin'])->name('users.showLogin');
+Route::post('/logout', [UserController::class, 'logout'])
+    ->name('logout');
+Route::post('/login', [UserController::class, 'login'])
+    ->name('users.login');
+Route::get('/login', [UserController::class, 'showLogin'])
+    ->name('users.showLogin');
 
-Route::resource('posts', PostController::class)->middleware(['auth', 'add.user.id']);
+Route::resource('posts', PostController::class)
+    ->middleware(['auth', 'add.user.id']);
 
-Route::resource('users', UserController::class);
+Route::resource('users', UserController::class)
+    ->except(['showLogin', 'store'])
+    ->middleware(['auth', 'add.user.id']);
 
 Route::resource('posts.comments', CommentController::class)
     ->only(['store', 'destroy', 'update'])

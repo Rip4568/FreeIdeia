@@ -14,7 +14,7 @@
           <a href="{{ route('posts.index') }}" class="btn btn-outline btn-acciant btn-sm">Ideias</a>
         </li>
         <li>
-          <a class="btn btn-outline btn-acciant btn-sm">Perfil</a>
+          <a href="{{ route('users.show', ['user' => Auth::user()]) }}" class="btn btn-outline btn-acciant btn-sm">Perfil</a>
         </li>
         <li>
           <a class="btn btn-outline btn-success btn-sm" href="{{ route('posts.create') }}">New Post</a>

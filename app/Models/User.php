@@ -3,12 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable // implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -23,20 +24,29 @@ class User extends Authenticatable
         'password',
     ];
 
-    public function posts() {
+    public function posts()
+    {
         return $this->belongsToMany(Post::class);
     }
 
-    public function comments() {
+    public function comments()
+    {
         return $this->hasMany(Comment::class);
     }
 
-    public function following() {
+    public function following()
+    {
         return $this->belongsToMany(User::class, 'follows', 'user_id', 'following_id');
     }
 
-    public function followers() {
+    public function followers()
+    {
         return $this->belongsToMany(User::class, 'follows', 'following_id', 'user_id');
+    }
+
+    public function loadFollowing(): User
+    {
+        return $this->load('following');
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Models\Post;
@@ -27,6 +28,7 @@ Route::get('/', function () {
     ];
     return view('welcome', $data);
 })->name('welcome');
+
 Route::post('/logout', [UserController::class, 'logout'])
     ->name('logout');
 Route::post('/login', [UserController::class, 'login'])
@@ -44,3 +46,7 @@ Route::resource('users', UserController::class)
 Route::resource('posts.comments', CommentController::class)
     ->only(['store', 'destroy', 'update'])
     ->middleware(['auth', 'add.user.id']);
+
+
+Route::post('/follow/{user}', [FollowController::class, 'follow'])->name('follow');
+Route::post('/unfollow/{user}', [FollowController::class, 'unfollow'])->name('unfollow');

@@ -15,11 +15,11 @@ class PostController extends Controller
         $search = $request->input('search') ?? null;
         $posts = Post::when($search, function ($query) use ($search)  {
             return $query->where('title', 'like', '%' . strtolower($search) . '%')
-                     ->orWhere('title', 'like', '%' . strtoupper($search) . '%')
-                     ->orWhere('content', 'like', '%' . $search . '%');
-        })
-        ->orderBy('created_at', 'desc')
-        ->paginate(12);
+                ->orWhere('title', 'like', '%' . strtoupper($search) . '%')
+                ->orWhere('content', 'like', '%' . $search . '%');
+        })->orderBy('created_at', 'desc')
+            ->with('user')
+            ->paginate(12);
         $data = [
             "posts" => $posts,
             "status" => 200
@@ -66,6 +66,7 @@ class PostController extends Controller
         //
         $post->clicked = $post->clicked + 1;
         $post->save();
+        $post->load('comments');
         $data = [
             'post' => $post,
         ];

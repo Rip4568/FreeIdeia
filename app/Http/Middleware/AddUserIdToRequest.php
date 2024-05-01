@@ -20,6 +20,8 @@ class AddUserIdToRequest
         if (Auth::check()) {
             // Adicionar o user_id ao corpo da requisição
             $request->merge(['user_id' => Auth::id()]);
+        } else {
+            $request->merge(['user_id' => null]);
         }
 
         return $next($request);

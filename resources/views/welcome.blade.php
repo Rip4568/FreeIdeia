@@ -50,7 +50,11 @@
         <h2 class="card-title">{{$post->title}}</h2>
         <i class="card-title">Por: {{$post->user->name}}</i>
         <div class="card-actions justify-end">
-          <a class="btn btn-secondary" href="{{ route('posts.show', ['post'=>$post]) }}">Leia o conteudo</a>
+          @guest()
+          <a class="btn btn-secondary disabled" href="#faca-login-para-acessar">Leia o conteudo</a>
+            @else
+            <a class="btn btn-secondary" href="{{ route('posts.show', ['post'=>$post]) }}">Leia o conteudo</a>
+          @endguest
         </div>
       </div>
     </div>

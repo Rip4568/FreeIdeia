@@ -48,5 +48,7 @@ Route::resource('posts.comments', CommentController::class)
     ->middleware(['auth', 'add.user.id']);
 
 
-Route::post('/follow/{user}', [FollowController::class, 'follow'])->name('follow');
-Route::post('/unfollow/{user}', [FollowController::class, 'unfollow'])->name('unfollow');
+Route::match((['get', 'post']), '/follow/{user}', [FollowController::class, 'follow'])
+    ->name('follow');
+Route::match((['get', 'post']), '/unfollow/{user}', [FollowController::class, 'unfollow'])
+    ->name('unfollow');

@@ -8,7 +8,15 @@
     <div class="post card bg-neutral p-6">
       <h1 class="text-5xl text-center">{{ $post->title }}</h1>
       <br>
-      <p>Por: <i><a href="#todos-os-posts-deste-usuario">{{ $post->user->name }}</a></i></p>
+      <p>Por: <i><a href="#todos-os-posts-deste-usuario">{{ $post->user->name }}</a></i>
+        @if (Auth::user()->id !== $post->user_id)
+        @if ($following_users->contains($post->user_id))
+             <button class="btn btn-error btn-sm">Deixa de seguir</button>   
+        @else
+            <button class="btn btn-primary btn-sm">Seguir</button>
+        @endif
+      @endif
+      </p>
       <p class="pt-6">{{ $post->content }}</p>
       <br>
       @if (Auth::user()->id == $post->user_id)

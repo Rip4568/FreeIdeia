@@ -20,9 +20,12 @@ class PostController extends Controller
         })->orderBy('created_at', 'desc')
             ->with('user')
             ->paginate(12);
+
+        $following_users = auth()->user()->following;
         $data = [
             "posts" => $posts,
-            "status" => 200
+            "status" => 200,
+            "following_users" => $following_users,
         ];
         return view('posts.index', $data);
     }
@@ -67,8 +70,10 @@ class PostController extends Controller
         $post->clicked = $post->clicked + 1;
         $post->save();
         $post->load('comments');
+        $following_users = auth()->user()->following;
         $data = [
             'post' => $post,
+            'following_users' => $following_users
         ];
         return view('posts.show', $data);
     }

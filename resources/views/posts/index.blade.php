@@ -8,17 +8,14 @@
       <div class="card-body">
         <h2 class="card-title">{{$post->title}}</h2>
         <i class="card-title">Por: {{$post->user->name}}
-          @if (Auth::user()->following->contains($user->id))
-          <form action="{{ route('unfollow', $user->id) }}" method="POST">
-              @csrf
-              <button type="submit">Deixar de seguir</button>
-          </form>
-      @else
-          <form action="{{ route('follow', $user->id) }}" method="POST">
-              @csrf
-              <button type="submit">Seguir</button>
-          </form>
-      @endif</i>
+          @if (Auth::user()->id !== $post->user_id)
+            @if ($following_users->contains($post->user_id))
+                 <button class="btn btn-error btn-sm">Deixa de seguir</button>   
+            @else
+                <button class="btn btn-primary btn-sm">Seguir</button>
+            @endif
+          @endif
+        </i>
         <div class="card-actions justify-end">
           <a class="btn btn-secondary" href="{{ route('posts.show', ['post'=>$post]) }}">Leia o conteudo</a>
         </div>

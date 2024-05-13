@@ -23,6 +23,7 @@ class UserController extends Controller
         // Tentar autenticar o usuário
         if (Auth::attempt($credentials, $rememberMe)) {
             // Login bem-sucedido, redirecionar para a página desejada
+            session(['authenticated_user' => Auth::user()]);
             return response()->redirectTo('/');
         }
         // Login falhou, retornar um erro

@@ -14,9 +14,11 @@ class PostController extends Controller
     {
         $search = $request->input('search') ?? null;
         $posts = Post::when($search, function ($query) use ($search)  {
-            return $query->where('title', 'like', '%' . strtolower($search) . '%')
+            return $query->where(function ($query) use ($search) {
+                $query->where('title', 'like', '%' . strtolower($search) . '%')
                 ->orWhere('title', 'like', '%' . strtoupper($search) . '%')
                 ->orWhere('content', 'like', '%' . $search . '%');
+            });
         })->orderBy('created_at', 'desc')
             ->with('user')
             ->paginate(12);

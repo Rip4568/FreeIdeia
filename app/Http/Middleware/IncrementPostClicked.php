@@ -17,7 +17,7 @@ class IncrementPostClicked
     public function handle(Request $request, Closure $next): Response
     {
         //increment o campo clicked do post
-        $post = Post::find($request->id);
+        $post = Post::find($request->post->id);
         $post->clicked = $post->clicked + 1;
         $post->save();
         return $next($request);

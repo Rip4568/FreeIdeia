@@ -46,6 +46,7 @@
            <div class="comment-header flex justify-between items-center">
              <div class="comment-author">
                <span class="font-semibold">{{ $comment->user->name }}</span>
+               <span class="text-sm">{{ $comment->created_at->diffForHumans() }}</span>
              </div>
              @if (Auth::user()->id == $comment->user_id)
                <div class="comment-actions flex">
@@ -82,5 +83,5 @@
     </div>
    </section>
   <!-- Dentro de views/page/posts/show.blade.php -->
-  @vite(['resources/js/posts/show.js'])
+  {{-- @vite(['resources/js/posts/show.js']) --}}
 @endsection

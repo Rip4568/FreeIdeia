@@ -8,6 +8,7 @@
       <div class="card-body">
         <h2 class="card-title">{{$post->title}}</h2>
         <i class="card-title">Por: {{$post->user->name}}
+          
           @if (Auth::user()->id !== $post->user_id)
             @if ($following_users->contains($post->user_id))
                  <button class="btn btn-error btn-sm">Deixa de seguir</button>   
@@ -16,6 +17,7 @@
             @endif
           @endif
         </i>
+        <span class="text-sm">{{ $post->created_at->diffForHumans() }}</span>
         <div class="card-actions justify-end">
           <a class="btn btn-secondary" href="{{ route('posts.show', ['post'=>$post]) }}">Leia o conteudo</a>
         </div>

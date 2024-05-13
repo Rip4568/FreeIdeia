@@ -29,6 +29,11 @@ Route::get('/', function () {
     return view('welcome', $data);
 })->name('welcome');
 
+/* Route::get('/pulse', function () {
+    // Lógica para a rota pulse
+})->name('pulse')->middleware('auth'); */
+
+
 Route::post('/logout', [UserController::class, 'logout'])
     ->name('logout');
 Route::post('/login', [UserController::class, 'login'])

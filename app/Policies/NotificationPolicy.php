@@ -16,12 +16,10 @@ class NotificationPolicy
         //
     }
 
-    /**
-     /* Determinar se o usuário pode visualizar o modelo. */
-     /*/
+    
     public function view(User $user, Notification $notification): bool
     {
-        //
+        return true;
     }
 
     /**

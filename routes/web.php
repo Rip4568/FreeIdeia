@@ -36,24 +36,27 @@ Route::get('/', function () {
 
 Route::post('/logout', [UserController::class, 'logout'])
     ->name('logout');
+
 Route::post('/login', [UserController::class, 'login'])
     ->name('users.login');
+
 Route::get('/login', [UserController::class, 'showLogin'])
     ->name('users.showLogin');
 
-Route::resource('posts', PostController::class)
-    ->middleware(['auth', 'add.user.id']);
-
 Route::resource('users', UserController::class)
-    ->except(['showLogin', 'store'])
+    ->only(['index', 'show', 'edit', 'update', 'destroy'])
+    ->middleware(['auth:web']);
+
+
+Route::resource('posts', PostController::class)
     ->middleware(['auth', 'add.user.id']);
 
 Route::resource('posts.comments', CommentController::class)
     ->only(['store', 'destroy', 'update'])
     ->middleware(['auth', 'add.user.id']);
 
-
 Route::match((['get', 'post']), '/follow/{user}', [FollowController::class, 'follow'])
     ->name('follow');
+
 Route::match((['get', 'post']), '/unfollow/{user}', [FollowController::class, 'unfollow'])
     ->name('unfollow');

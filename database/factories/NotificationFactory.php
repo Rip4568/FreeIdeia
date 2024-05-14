@@ -17,12 +17,13 @@ class NotificationFactory extends Factory
      */
     public function definition(): array
     {
+
         return [
-            'user_id' => User::factory(),
+            'user_id' => User::inRandomOrder()->first()->id,
             'type' => $this->faker->word,
             'is_read' => false,
             'title' => $this->faker->text(18),
-            'message' => $this->faker->realText(200),
+            'message' => $this->faker->realText(32),
         ];
     }
 }

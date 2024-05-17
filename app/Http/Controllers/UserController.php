@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\WelcomeEvent;
+use App\Events\WelcomeNotificationEvent;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -82,7 +82,7 @@ class UserController extends Controller
 
         //disparar o evneto para dar boas vindas ao novo usuario por meio
         //da tabela de notifications
-        event(new WelcomeEvent($user));
+        event(new WelcomeNotificationEvent($user));
 
         //Auth::login($user);//utilizar futuramente, facilitar a autenticação do usuário
 

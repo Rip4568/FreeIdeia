@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\NotificationEvent;
+use App\Events\WelcomeNotificationEvent;
+use App\Listeners\NotificationListner;
+use App\Listeners\WelcomeNotificationListner;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -17,6 +21,8 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+            NotificationListner::class,
+            WelcomeNotificationEvent::class,
         ],
     ];
 
@@ -25,7 +31,11 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        parent::boot();
+        Event::listen(
+            NotificationEvent::class, 
+            NotificationListner::class,
+            WelcomeNotificationListner::class);
     }
 
     /**

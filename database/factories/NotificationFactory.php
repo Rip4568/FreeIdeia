@@ -17,10 +17,11 @@ class NotificationFactory extends Factory
      */
     public function definition(): array
     {
+        $types = ['success', 'error', 'danger', 'primary', 'secondary'];
 
         return [
             'user_id' => User::inRandomOrder()->first()->id,
-            'type' => $this->faker->word,
+            'type' => $types[array_rand($types)],
             'is_read' => false,
             'title' => $this->faker->text(18),
             'message' => $this->faker->realText(32),

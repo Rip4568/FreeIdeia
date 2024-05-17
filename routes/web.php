@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\NotificationEvent;
+use App\Events\WelcomeNotificationEvent;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\NotificationController;
@@ -39,6 +40,13 @@ Route::get('/notifications-test', function () {
     event(new NotificationEvent($user));    
     return redirect()->route('welcome');
 })->name('notifications.test');
+
+
+Route::get('/notifications-welcome', function () {
+    $user = AuthenticatedUserService::getAuthenticatedUser();
+    event(new WelcomeNotificationEvent($user));    
+    return redirect()->route('welcome');
+})->name('notifications.welcome.test');
 
 /* Route::get('/pulse', function () {
     // Lógica para a rota pulse

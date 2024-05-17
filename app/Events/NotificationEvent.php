@@ -11,15 +11,15 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class WelcomeEvent
+class NotificationEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public User $user;
 
     /**
      * Create a new event instance.
      */
-    public User $user;
-
     public function __construct(User $user)
     {
         $this->user = $user;
@@ -30,7 +30,6 @@ class WelcomeEvent
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    
     public function broadcastOn(): array
     {
         return [
@@ -38,4 +37,3 @@ class WelcomeEvent
         ];
     }
 }
-

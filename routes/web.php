@@ -1,11 +1,15 @@
 <?php
 
+use App\Events\NotificationEvent;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Models\Post;
 use App\Models\User;
+use App\Services\AuthenticatedUserService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +33,13 @@ Route::get('/', function () {
     return view('welcome', $data);
 })->name('welcome');
 
+
+Route::get('/notifications-test', function () {
+    $user = AuthenticatedUserService::getAuthenticatedUser();
+    event(new NotificationEvent($user));    
+    return redirect()->route('welcome');
+})->name('notifications.test');
+
 /* Route::get('/pulse', function () {
     // Lógica para a rota pulse
 })->name('pulse')->middleware('auth'); */
@@ -43,9 +54,7 @@ Route::post('/login', [UserController::class, 'login'])
 Route::get('/login', [UserController::class, 'showLogin'])
     ->name('users.showLogin');
 
-Route::resource('users', UserController::class)
-    ->only(['index', 'show', 'edit', 'update', 'destroy'])
-    ->middleware(['auth:web']);
+Route::resource('users', UserController::class);
 
 
 Route::resource('posts', PostController::class)
@@ -60,3 +69,7 @@ Route::match((['get', 'post']), '/follow/{user}', [FollowController::class, 'fol
 
 Route::match((['get', 'post']), '/unfollow/{user}', [FollowController::class, 'unfollow'])
     ->name('unfollow');
+
+Route::resource('notifications', NotificationController::class)
+    ->only(['index', 'destroy'])
+    ->middleware('auth');

@@ -13,7 +13,9 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        //
+        $user = session('authenticated_user');
+        $notifications = Notification::where('user_id', $user->id)->get();
+        return response()->json($notifications);
     }
 
     /**

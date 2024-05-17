@@ -26,7 +26,20 @@ class WelcomeNotificationListner implements ShouldQueue
     {
         Notification::create([
             'user_id' => $event->user->id,
+            'title' => 'Saudações!',
             'message' => 'Bem-vindo(a) ' . $event->user->name . '! Sua conta foi criada com sucesso.'
+        ]);
+
+        Notification::create([
+            'user_id' => $event->user->id,
+            'tile' => 'Regras da plataforma',
+            'message' => '1) Evite expor pessoas desnecessariamente, <br> 2) se divirta'
+        ]);
+
+        Notification::create([
+            'user_id' => $event->user->id,
+            'tile' => 'Jonathas lhe agradece!',
+            'message' => 'Como funaddor da plataforma desejo a você que se divirta e agradeço por ter se cadastrado!'
         ]);
     }
 }

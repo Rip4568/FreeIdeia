@@ -21,8 +21,6 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
-            NotificationListner::class,
-            WelcomeNotificationEvent::class,
         ],
     ];
 
@@ -33,9 +31,13 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
         Event::listen(
-            NotificationEvent::class, 
-            NotificationListner::class,
-            WelcomeNotificationListner::class);
+            NotificationEvent::class,
+            NotificationListner::class
+        );
+        Event::listen(
+            WelcomeNotificationEvent::class,
+            WelcomeNotificationListner::class
+        );
     }
 
     /**

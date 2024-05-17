@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->enum('type', ['success', 'error', 'danger', 'primary', 'secondary']);
+            $table->enum('type', ['success', 'error', 'danger', 'primary', 'secondary'])->default('primary');
             $table->boolean('is_read')->default(false);
             $table->string('title', 18);
             $table->text('message')->nullable();

@@ -58,7 +58,8 @@
         </div>
       </button>
     </div>
-      <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+      <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 max-h-screen overflow-y-auto">
+
         @if (Auth::check())
             @foreach (Auth::user()->notifications as $notification)
                 <li><a href="#{{ $notification->title }}">{{$notification->title}}</a></li>
@@ -72,8 +73,9 @@
 </div>
 @if (Auth::check())
   <script>
-    const response = await fetch('{{ route('notifications.index') }}')
+    const response = await fetch('{{ route('notifications.index') }}', headers={'X-Requested-With': 'XMLHttpRequest'})
     const notifications = await response.json()
+    console.log(notifications);
     const badge = document.querySelector('.indicator-item')
     badge.textContent = notifications.length
   </script>    

@@ -87,7 +87,11 @@ class UserController extends Controller
         //Auth::login($user);//utilizar futuramente, facilitar a autenticação do usuário
 
 
-        return redirect()->route('users.showLogin')->with('success', 'Conta criada com sucesso. Faça o login para acessar.');
+        return redirect()
+            ->route('users.showLogin')
+            ->with(
+                'success', 
+                'Conta criada com sucesso. Faça o login para acessar.');
     }
 
     /**

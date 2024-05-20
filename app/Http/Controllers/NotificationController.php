@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Notification;
 use App\Http\Requests\StoreNotificationRequest;
 use App\Http\Requests\UpdateNotificationRequest;
+use App\Services\AuthenticatedUserService;
 
 class NotificationController extends Controller
 {
@@ -64,5 +65,11 @@ class NotificationController extends Controller
     public function destroy(Notification $notification)
     {
         //
+    }
+
+    public function destroyAll()  {
+        $user = AuthenticatedUserService::getAuthenticatedUser();
+        $user->notifications()->delete();
+        return redirect()->route('welcome');
     }
 }

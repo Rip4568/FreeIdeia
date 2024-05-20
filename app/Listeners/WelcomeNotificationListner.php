@@ -32,14 +32,14 @@ class WelcomeNotificationListner implements ShouldQueue
 
         Notification::create([
             'user_id' => $event->user->id,
-            'tile' => 'Regras da plataforma',
+            'title' => 'Regras da plataforma',
             'message' => '1) Evite expor pessoas desnecessariamente, <br> 2) se divirta'
         ]);
 
         Notification::create([
             'user_id' => $event->user->id,
-            'tile' => 'Jonathas lhe agradece!',
-            'message' => 'Como funaddor da plataforma desejo a você que se divirta e agradeço por ter se cadastrado!'
+            'title' => 'Jonathas lhe agradece!',
+            'message' => 'Como fundador da plataforma desejo a você que se divirta e agradeço por ter se cadastrado!'
         ]);
     }
 }

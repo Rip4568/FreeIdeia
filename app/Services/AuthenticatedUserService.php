@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
@@ -14,7 +15,7 @@ class AuthenticatedUserService
    *
    * @return \Illuminate\Contracts\Auth\Authenticatable|null
    */
-  public static function getAuthenticatedUser()
+  public static function getAuthenticatedUser(): User
   {
     $cacheKey = 'authenticated_user';
     $user = Cache::get($cacheKey);

@@ -48,6 +48,7 @@ class NotificationListner implements ShouldQueue
    */
   public function handle(NotificationEvent $event): void
   {
+    $this->delay = 10;
     Notification::create([
       'user_id' => $event->user->id,
       'type' => 'primary',

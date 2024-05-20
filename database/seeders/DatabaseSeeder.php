@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         ]); */
         $users = User::all();
         foreach ($users as $user) {
-            Notification::factory()->count(2)->create([
+            Notification::factory()->count(5)->create([
                 'user_id' => $user->id,
             ]);
         }

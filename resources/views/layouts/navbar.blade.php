@@ -58,27 +58,38 @@
         </div>
       </button>
     </div>
-      <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 max-h-screen overflow-y-auto">
-
-        @if (Auth::check())
-            @foreach (Auth::user()->notifications as $notification)
-                <li><a href="#{{ $notification->title }}">{{$notification->title}}</a></li>
-            @endforeach
-        @endif
-      </ul>
+    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 max-h-screen overflow-y-auto">
+      <li class="fa fa-bell-slash"><a href="{{ route('notificaions.clear') }}" class="btn btn-sm btn-outline btn-primary">limpar</a></li>
+      @if (Auth::check())
+        @foreach (Auth::user()->notifications as $notification)
+          <div class="collapse bg-base-200">
+            <input type="radio" name="my-accordion" @if ($loop->first) checked="checked" @endif />
+            <div class="collapse-title text-xl font-medium">
+              {{ $notification->title }}
+            </div>
+            <div class="collapse-content">
+              <p>{{ $notification->message }}</p>
+              </div>
+            </div>
+          @endforeach
+      @endif
+  </ul>
     </div>
-    
-    
   </div>
 </div>
 @if (Auth::check())
   <script>
-    const response = await fetch('{{ route('notifications.index') }}', headers={'X-Requested-With': 'XMLHttpRequest'})
+    const response = await fetch('{{ route('notifications.index') }}', {
+    headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    }
+})
     const notifications = await response.json()
     console.log(notifications);
     const badge = document.querySelector('.indicator-item')
     badge.textContent = notifications.length
-  </script>    
+  </script>
 @endif
 
 

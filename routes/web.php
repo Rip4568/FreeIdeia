@@ -35,7 +35,11 @@ Route::get('/', function () {
 })->name('welcome');
 
 
-Route::get('/notifications-test', function () {
+Route::get('clear', [NotificationController::class, 'destroyAll'])
+    ->name('notificaions.clear')
+    ->middleware('auth');
+
+Route::get('/create-nf', function () {
     $user = AuthenticatedUserService::getAuthenticatedUser();
     event(new NotificationEvent($user));    
     return redirect()->route('welcome');
@@ -63,7 +67,6 @@ Route::get('/login', [UserController::class, 'showLogin'])
     ->name('users.showLogin');
 
 Route::resource('users', UserController::class);
-
 
 Route::resource('posts', PostController::class)
     ->middleware(['auth', 'add.user.id']);

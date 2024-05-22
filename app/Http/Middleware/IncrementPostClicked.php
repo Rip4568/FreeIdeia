@@ -22,4 +22,10 @@ class IncrementPostClicked
         $post->save();
         return $next($request);
     }
+
+    /* executar apos o request */
+    public function terminate(Request $request, Response $response)
+    {
+        //
+    }
 }

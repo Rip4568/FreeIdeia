@@ -39,14 +39,14 @@ Route::get('clear', [NotificationController::class, 'destroyAll'])
     ->name('notificaions.clear')
     ->middleware('auth');
 
-Route::get('/create-nf', function () {
+Route::get('/notification-test', function () {
     $user = AuthenticatedUserService::getAuthenticatedUser();
     event(new NotificationEvent($user));    
     return redirect()->route('welcome');
 })->name('notifications.test');
 
 
-Route::get('/notifications-welcome', function () {
+Route::get('/welcome-test', function () {
     $user = AuthenticatedUserService::getAuthenticatedUser();
     event(new WelcomeNotificationEvent($user));    
     return redirect()->route('welcome');

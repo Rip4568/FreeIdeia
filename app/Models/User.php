@@ -22,6 +22,8 @@ class User extends Authenticatable // implements MustVerifyEmail
         'email',
         'password',
     ];
+    
+    protected $guarded = ['is_admin'];
 
     public function posts()
     {
@@ -69,6 +71,7 @@ class User extends Authenticatable // implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_admin' => 'boolean',
         'password' => 'hashed',
     ];
 }

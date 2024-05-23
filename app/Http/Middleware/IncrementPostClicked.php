@@ -16,16 +16,15 @@ class IncrementPostClicked
      */
     public function handle(Request $request, Closure $next): Response
     {
-        //increment o campo clicked do post
-        $post = Post::find($request->post->id);
-        $post->clicked = $post->clicked + 1;
-        $post->save();
+        // dd($request->post->id);
         return $next($request);
     }
 
     /* executar apos o request */
     public function terminate(Request $request, Response $response)
     {
-        //
+        $post = Post::find($request->post->id);
+        $post->clicked = $post->clicked + 1;
+        $post->save();
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Notification;
 use App\Http\Requests\StoreNotificationRequest;
 use App\Http\Requests\UpdateNotificationRequest;
-use App\Services\AuthenticatedUserService;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
@@ -15,7 +15,9 @@ class NotificationController extends Controller
     public function index()
     {
         $user = session('authenticated_user');
-        $notifications = Notification::where('user_id', $user->id)->get();
+        $notifications = Notification::where('user_id', $user->id)
+            ->limit(12)
+            ->get();
         return response()->json($notifications);
     }
 
@@ -68,7 +70,7 @@ class NotificationController extends Controller
     }
 
     public function destroyAll()  {
-        $user = AuthenticatedUserService::getAuthenticatedUser();
+        $user = Auth::user();
         $user->notifications()->delete();
         return redirect()->route('welcome');
     }

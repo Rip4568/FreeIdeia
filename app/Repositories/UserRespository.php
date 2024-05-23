@@ -11,7 +11,7 @@ class UserRespository
     return User::all();
   }
 
-  public function findOne(string $id)
+  public function find(string $id)
   {
     return User::find($id);
   }

@@ -9,8 +9,9 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Models\Post;
 use App\Models\User;
-use App\Services\AuthenticatedUserService;
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,22 +41,28 @@ Route::get('clear', [NotificationController::class, 'destroyAll'])
     ->middleware('auth');
 
 Route::get('/notification-test', function () {
-    $user = AuthenticatedUserService::getAuthenticatedUser();
+    $user = Auth::user();
     event(new NotificationEvent($user));    
     return redirect()->route('welcome');
-})->name('notifications.test');
-
+})
+    ->name('notifications.test')
+    ->middleware('auth');
 
 Route::get('/welcome-test', function () {
-    $user = AuthenticatedUserService::getAuthenticatedUser();
+    $user = Auth::user();
     event(new WelcomeNotificationEvent($user));    
     return redirect()->route('welcome');
-})->name('notifications.welcome.test');
+})
+    ->name('notifications.welcome.test')
+    ->middleware('auth');
 
-/* Route::get('/pulse', function () {
-    // Lógica para a rota pulse
-})->name('pulse')->middleware('auth'); */
+Route::get('test-ajax', function () {
+    return response()->json(['message' => 'Hello World!']);
+})->name('test-ajax');
 
+Route::get('/pulse', function () {
+    return view('pulse::dashboard');
+})->name('pulse')->middleware(['auth', 'can:admin']);
 
 Route::post('/logout', [UserController::class, 'logout'])
     ->name('logout');
@@ -69,7 +76,7 @@ Route::get('/login', [UserController::class, 'showLogin'])
 Route::resource('users', UserController::class);
 
 Route::resource('posts', PostController::class)
-    ->middleware(['auth', 'add.user.id']);
+    ->middleware(['auth', 'add.user.id', 'increment.post.clicked']);
 
 Route::resource('posts.comments', CommentController::class)
     ->only(['store', 'destroy', 'update'])

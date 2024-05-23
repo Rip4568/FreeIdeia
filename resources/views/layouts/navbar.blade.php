@@ -77,51 +77,28 @@
     </div>
   </div>
 </div>
-@if (Auth::check())
-  <script>
-    const response = await fetch('{{ route('notifications.index') }}', {
-    headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-    }
-})
-    const notifications = await response.json()
-    console.log(notifications);
-    const badge = document.querySelector('.indicator-item')
-    badge.textContent = notifications.length
-  </script>
-@endif
 
-
-{{-- 
-  
-  @auth
-<button class="btn btn-ghost btn-circle">
-  <div class="indicator">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-    <span class="badge badge-xs badge-primary indicator-item"></span>
-  </div>
-</button>
-<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-  @foreach (Auth::user()->notifications as $notification)
-    <li>
-      <div class="alert alert-{{ $notification->type }}">
-        <div>
-          <span>{{ $notification->title }}</span>
-          <p>{{ $notification->message }}</p>
-        </div>
-      </div>
-    </li>
-  @endforeach
-</ul>
 
 <script>
-  const response = await fetch('{{ route('notifications.index') }}')
-  const notifications = await response.json()
-  const badge = document.querySelector('.indicator-item')
-  badge.textContent = notifications.length
-</script>
-@endauth
+  console.log('calling the ajax');
 
-  
-  --}}
+  /* window.axios.get('{{ route('test-ajax') }}')
+  .then((response) => {
+    console.log(response.ok);
+  }); */
+
+  window.axios.get('{{ route('test-ajax') }}')
+  .then((response) => {
+    console.log(response.ok);
+  });
+
+  async function testAjaxFetch() {
+    const response = await fetch('{{ route('test-ajax') }}');
+    console.log(response.ok);
+  }
+  testAjaxFetch();
+
+  /* async function fetchAllNotifications() {
+    const response = await axios.get('{{ route('test-ajax') }}');
+  } */
+</script>

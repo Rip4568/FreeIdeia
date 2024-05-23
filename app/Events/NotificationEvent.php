@@ -33,7 +33,7 @@ class NotificationEvent
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('channel-name'),
+            new PrivateChannel('users.' . $this->user->id),
         ];
     }
 }

@@ -80,25 +80,10 @@
 
 
 <script>
-  console.log('calling the ajax');
-
-  /* window.axios.get('{{ route('test-ajax') }}')
-  .then((response) => {
-    console.log(response.ok);
-  }); */
 
   window.axios.get('{{ route('test-ajax') }}')
   .then((response) => {
     console.log(response.ok);
   });
 
-  async function testAjaxFetch() {
-    const response = await fetch('{{ route('test-ajax') }}');
-    console.log(response.ok);
-  }
-  testAjaxFetch();
-
-  /* async function fetchAllNotifications() {
-    const response = await axios.get('{{ route('test-ajax') }}');
-  } */
 </script>

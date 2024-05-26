@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -43,23 +45,10 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreatePostRequest $request)
     {
-        
-        $validated = $request->validate([
-            'title' => 'required|min:3',
-            'user_id' => 'required', //quem coloca é o middleware
-            'content' => 'nullable'
-        ]);
-
-
-        Post::create([
-            'title' => $validated['title'],
-            'content' => $validated['content'] ?? null,
-            'user_id' => $validated['user_id']
-        ]);
-
-
+        $validated = $request->validated();
+        Post::create($validated);
         return redirect()->route('posts.create')->with('success', 'Posts criado com sucesso.');
     }
 
@@ -89,20 +78,10 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        $validated = $request->validate([
-            'title' => 'required|min:3',
-            'user_id' => 'required', //quem coloca é o middleware
-            'content' => 'nullable'
-        ]);
-
-        $post->update([
-            'title' => $validated['title'],
-            'content' => $validated['content'] ?? null,
-            'user_id' => $validated['user_id']
-        ]);
-
+        $validated = $request->validated();
+        $post->update($validated);
         return redirect()->route('posts.show', ['post' => $post])->with('success', 'Post atualizado com sucesso.');
     }
 

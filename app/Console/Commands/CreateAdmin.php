@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Events\NotificationEvent;
-use App\Listeners\NotificationListner;
+use App\Listeners\NotificationListener;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;

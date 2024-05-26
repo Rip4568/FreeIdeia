@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Notification;
 use App\Http\Requests\StoreNotificationRequest;
 use App\Http\Requests\UpdateNotificationRequest;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
@@ -14,11 +15,30 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        $user = session('authenticated_user');
+        $user = Auth::user();
         $notifications = Notification::where('user_id', $user->id)
-            ->limit(12)
-            ->get();
-        return response()->json($notifications);
+            ->orderBy('created_at', 'desc')
+            ->paginate(3);
+
+        $data = [
+            'notifications' => $notifications,
+        ];
+
+        return response()->json($data);
+    }
+
+    public function renderNotifications() {
+        $user = Auth::user();
+        $notifications = $user->notifications()
+            ->orderBy('created_at', 'desc')
+            ->paginate(3);
+        return view('partials.notifications.index', compact('notifications'));
+    }
+
+    public function read(Notification $notification) {
+        $notification->read = true;
+        $notification->save();
+        return response()->json(['message' => 'Notificação lida com sucesso!']);
     }
 
     /**
@@ -58,7 +78,9 @@ class NotificationController extends Controller
      */
     public function update(UpdateNotificationRequest $request, Notification $notification)
     {
-        //
+        $request->validated();
+        $notification->update($request->all());
+        return response()->json(['message' => 'Notificação atualizada com sucesso!']);
     }
 
     /**
@@ -66,7 +88,8 @@ class NotificationController extends Controller
      */
     public function destroy(Notification $notification)
     {
-        //
+        $notification->delete();
+        return response()->json(['message' => 'Notificação deletada com sucesso!']);
     }
 
     public function destroyAll()  {

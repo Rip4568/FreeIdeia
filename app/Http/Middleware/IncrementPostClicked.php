@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use App\Models\Post;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Log\Logger;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class IncrementPostClicked
@@ -23,8 +25,12 @@ class IncrementPostClicked
     /* executar apos o request */
     public function terminate(Request $request, Response $response)
     {
-        $post = Post::find($request->post->id);
-        $post->clicked = $post->clicked + 1;
-        $post->save();
+        try {
+            $post = Post::find($request->post->id);
+            $post->clicked = $post->clicked + 1;
+            $post->save();
+        } catch (\Throwable $e) {
+            Log::error($e->getMessage());
+        }
     }
 }

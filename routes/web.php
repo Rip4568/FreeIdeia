@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $data = [
+        "user" => Auth::user(),
         "posts" => Post::orderBy('created_at', 'desc')->take(6)->get(),
         "posts_quantity" => Post::all()->count(),
         "users_quantity" => User::all()->count(),
@@ -36,13 +37,9 @@ Route::get('/', function () {
 })->name('welcome');
 
 
-Route::get('clear', [NotificationController::class, 'destroyAll'])
-    ->name('notificaions.clear')
-    ->middleware('auth');
-
 Route::get('/notification-test', function () {
     $user = Auth::user();
-    event(new NotificationEvent($user));    
+    event(new NotificationEvent($user, 'Teste de notificação', 'Teste de notificação', 'primary'));
     return redirect()->route('welcome');
 })
     ->name('notifications.test')
@@ -50,7 +47,7 @@ Route::get('/notification-test', function () {
 
 Route::get('/welcome-test', function () {
     $user = Auth::user();
-    event(new WelcomeNotificationEvent($user));    
+    event(new WelcomeNotificationEvent($user));
     return redirect()->route('welcome');
 })
     ->name('notifications.welcome.test')
@@ -88,6 +85,12 @@ Route::match((['get', 'post']), '/follow/{user}', [FollowController::class, 'fol
 Route::match((['get', 'post']), '/unfollow/{user}', [FollowController::class, 'unfollow'])
     ->name('unfollow');
 
+
+/* Noptications Roues */
 Route::resource('notifications', NotificationController::class)
     ->only(['index', 'destroy'])
+    ->middleware('auth');
+
+Route::get('clear', [NotificationController::class, 'destroyAll'])
+    ->name('notificaions.clear')
     ->middleware('auth');

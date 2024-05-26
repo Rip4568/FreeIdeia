@@ -2,7 +2,9 @@
 
 namespace App\Events;
 
+use App\Models\Notification;
 use App\Models\User;
+use Dotenv\Util\Str;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -11,18 +13,29 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NotificationEvent
+class NotificationEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public User $user;
+    public String $title;
+    public String $message;
+    public String $type;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(User $user)
+    public function __construct(
+        User $user, 
+        ?String $title, 
+        ?String $message, 
+        ?String $type
+    )
     {
         $this->user = $user;
+        $this->title = $title ?? 'New Notification';
+        $this->message = $message ?? '';
+        $this->type = $type ?? 'primary';;
     }
 
     /**
@@ -33,7 +46,7 @@ class NotificationEvent
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('users.' . $this->user->id),
+            new PrivateChannel('notifications.' . $this->user->id),
         ];
     }
 }

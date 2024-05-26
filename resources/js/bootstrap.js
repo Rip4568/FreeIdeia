@@ -6,13 +6,16 @@
 
 import axios from 'axios';
 window.axios = axios;
-console.log(window.axios);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['Content-Type'] = 'application/json';
+window.axios.defaults.headers.common['X-CSRF-TOKEN'] = document.cookie.split(';').find(row => row.startsWith('XSRF-TOKEN=')).split('=')[1];
 
-window.axios.defaults.headers.common['X-CSRF-TOKEN'] = document
+export { axios };
+
+/* window.axios.defaults.headers.common['X-CSRF-TOKEN'] = document
   .querySelector('meta[name="csrf-token"]')
-  .getAttribute('content');
+  .getAttribute('content'); */
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -25,13 +28,11 @@ import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 window.Pusher = Pusher;
 
-window.Echo = new Echo({
-  broadcaster: 'pusher',
-  key: import.meta.env.VITE_PUSHER_APP_KEY,
-  cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1',
-  wsHost: import.meta.env.VITE_PUSHER_HOST ? import.meta.env.VITE_PUSHER_HOST : `ws-${import.meta.env.VITE_PUSHER_APP_CLUSTER}.pusher.com`,
-  wsPort: import.meta.env.VITE_PUSHER_PORT ?? 80,
-  wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
-  forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
+/* window.Echo = new Echo({
+  broadcaster: 'redis',
+  host: import.meta.env.VITE_REDIS_HOST ?? '127.0.0.1',
+  port: import.meta.env.VITE_REDIS_PORT ?? 6379,
+  key: import.meta.env.VITE_REDIS_KEY ?? 'laravel_database',
+
   enabledTransports: ['ws', 'wss'],
-});
+}); */

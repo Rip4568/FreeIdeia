@@ -10,10 +10,11 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NotificationEvent implements ShouldBroadcast
+class NotificationEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -26,16 +27,15 @@ class NotificationEvent implements ShouldBroadcast
      * Create a new event instance.
      */
     public function __construct(
-        User $user, 
-        ?String $title, 
-        ?String $message, 
-        ?String $type
-    )
-    {
+        User $user,
+        String $title = 'New Notification',
+        String $message = '',
+        String $type = 'primary'
+    ) {
         $this->user = $user;
-        $this->title = $title ?? 'New Notification';
-        $this->message = $message ?? '';
-        $this->type = $type ?? 'primary';;
+        $this->title = $title;
+        $this->message = $message;
+        $this->type = $type;
     }
 
     /**

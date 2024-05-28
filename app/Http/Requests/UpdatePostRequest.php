@@ -24,7 +24,8 @@ class UpdatePostRequest extends FormRequest
         return [
             'title' => 'required|min:3',
             'user_id' => 'required', //quem coloca é o middleware (add.user.id)
-            'content' => 'nullable'
+            'content' => 'nullable',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 }

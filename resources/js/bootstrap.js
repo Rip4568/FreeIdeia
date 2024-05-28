@@ -9,7 +9,9 @@ window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.axios.defaults.headers.common['Content-Type'] = 'application/json';
-window.axios.defaults.headers.common['X-CSRF-TOKEN'] = document.cookie.split(';').find(row => row.startsWith('XSRF-TOKEN=')).split('=')[1];
+/* window.axios.defaults.headers.common['X-CSRF-TOKEN'] = document
+  .querySelector('meta[name="csrf-token"]')
+  .getAttribute('content'); */
 
 export { axios };
 

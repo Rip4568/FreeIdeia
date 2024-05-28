@@ -19,6 +19,7 @@ class NotificationLivewire extends Component
         $this->loadNotifications();
     }
 
+    #On:{'notification.'}
     public function loadNotifications()
     {
         $this->notifications = Notification::where('user_id', $this->user->id)

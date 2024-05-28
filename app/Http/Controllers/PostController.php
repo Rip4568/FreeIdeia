@@ -6,6 +6,7 @@ use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -14,6 +15,7 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
+        $user = Auth::user();
         $search = $request->input('search') ?? null;
         $posts = Post::when($search, function ($query) use ($search)  {
             return $query->where(function ($query) use ($search) {
@@ -30,6 +32,8 @@ class PostController extends Controller
             "posts" => $posts,
             "status" => 200,
             "following_users" => $following_users,
+            "search" => $search,
+            "user" => $user,
         ];
         return view('posts.index', $data);
     }

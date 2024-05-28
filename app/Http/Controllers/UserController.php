@@ -110,6 +110,12 @@ class UserController extends Controller
         //
     }
 
+    public function logindAndSignup(Request $request) 
+    {
+        $user = Auth::user();
+        return view('auth.loginAndSignup', compact('user'));;
+    }
+
     /**
      * Update the specified resource in storage.
      */

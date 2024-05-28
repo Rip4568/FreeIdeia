@@ -53,9 +53,10 @@
         </div>
       </button>
     </div>
-    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 max-h-screen overflow-y-auto notifications">
+    @livewire('notification-livewire')
+    {{-- <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 max-h-screen overflow-y-auto notifications">
       <li class="fa fa-bell-slash"><a href="{{ route('notificaions.clear') }}" class="btn btn-sm btn-outline btn-primary">limpar tudo</a></li>
-    </ul>
+    </ul> --}}
     </div>
   </div>
 </div>
@@ -77,7 +78,7 @@
     
     function setValueIndicatorItem(valueQuantity) {
       const indicatorItem = document.querySelector('.indicator-item');
-      indicatorItem.textContent = `++${valueQuantity}`;
+      indicatorItem.textContent = `+${valueQuantity}`;
     }
 
     function buildNotificationsUI(notifications) {
@@ -124,7 +125,7 @@
       const respose = await fetch('{{ route('notifications.index') }}');
       console.log(respose.ok);
     }
-    fetchNotifications();
+    /* fetchNotifications(); */
   })
 </script>
 @endif

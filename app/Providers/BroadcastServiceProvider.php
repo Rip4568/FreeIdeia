@@ -13,6 +13,9 @@ class BroadcastServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Broadcast::routes();
+        Broadcast::channel('notification-user.{id}', function ($user, $id) {
+            return (int) $user->id === (int) $id;
+        });
 
         require base_path('routes/channels.php');
     }

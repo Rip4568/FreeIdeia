@@ -23,7 +23,6 @@ class User extends Authenticatable // implements MustVerifyEmail
         'password',
     ];
     
-    protected $guarded = ['is_admin'];
 
     public function posts()
     {

@@ -3,16 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Events\WelcomeNotificationEvent;
+use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    private $userService;
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -66,32 +73,20 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|unique:users|max:255',
-            'password' => 'required|min:3|confirmed',
-        ]);
 
-        $user = User::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => bcrypt($validatedData['password'])
-        ]);
+        $validatedData = $request->validated();
+        $user = $this->userService->create($validatedData);
 
-        //disparar o evneto para dar boas vindas ao novo usuario por meio
-        //da tabela de notifications
         event(new WelcomeNotificationEvent($user));
-
-        //Auth::login($user);//utilizar futuramente, facilitar a autenticação do usuário
-
 
         return redirect()
             ->route('users.showLogin')
             ->with(
-                'success', 
-                'Conta criada com sucesso. Faça o login para acessar.');
+                'success',
+                'Conta criada com sucesso. Faça o login para acessar.'
+            );
     }
 
     /**
@@ -119,19 +114,11 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $validatedData = $request->validate([
-            'name' => 'nullable|required|string|max:255',
-            'email' => 'nullable|required|email|unique:users,email,' . $user->id,
-            'password' => 'nullable|string|min:8|confirmed',
-        ]);
 
-        if ($request->filled('password')) {
-            $validatedData['password'] = Hash::make($validatedData['password']);
-        }
-
-        $user->update($validatedData);
+        $validatedData = $request->validated();
+        $user = $this->userService->update($user->id, $validatedData);
 
         return redirect()->route('users.index')
             ->with('success', 'User updated successfully');

@@ -4,10 +4,11 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Repositories\UserRespository;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
-  private UserRespository $userRepository;
+  private $userRepository;
   public function __construct(UserRespository $userRepository)
   {
     $this->userRepository = $userRepository;
@@ -15,11 +16,17 @@ class UserService
 
   public function create(array $data)
   {
+    if (isset($data['password'])) {
+      $data['password'] = Hash::make($data['password']);
+    }
     return $this->userRepository->create($data);
   }
 
   public function update(string $id, array $data)
   {
+    if (isset($data['password'])) {
+      $data['password'] = Hash::make($data['password']);
+    }
     return $this->userRepository->update($id, $data);
   }
 

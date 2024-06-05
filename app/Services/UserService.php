@@ -45,4 +45,5 @@ class UserService
   {
     return $this->userRepository->all();
   }
+
 }

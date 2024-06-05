@@ -15,6 +15,13 @@ class Post extends Model
         "banner"
     ];
 
+    protected $appends = ['banner_url'];
+
+    public function getBannerUrlAttribute() 
+    {
+        return $this->banner ? asset('storage/' . $this->banner) : null;
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }

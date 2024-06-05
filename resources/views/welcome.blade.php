@@ -47,8 +47,10 @@
   @foreach ($posts as $post)
     <div class="card w-96 bg-neutral shadow-xl">
       <div class="card-body">
+        <img src="{{ $post->banner_url }}" class="card-image" alt="{{ $post->title }}" style="max-width: 100%;">
         <h2 class="card-title">{{$post->title}}</h2>
         <i class="card-title">Por: {{$post->user->name}}</i>
+        <i class="card-title">{{ $post->created_at->diffForHumans() }}</i>
         <div class="card-actions justify-end">
           <a class="btn btn-secondary" href="{{ route('posts.show', ['post'=>$post]) }}">Leia o conteudo</a>
         </div>

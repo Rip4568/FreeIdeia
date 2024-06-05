@@ -3,7 +3,7 @@
 @section('title', 'editando post')
 
 @section('content')
-  <form action="{{ route('posts.update', ['post' => $post]) }}" method="POST">
+  <form action="{{ route('posts.update', ['post' => $post]) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <div class="artboard-demo p-4 gap-2 min-h-screen">
@@ -17,6 +17,10 @@
       <div class="text-red-500">{{ $message }}</div>
     @enderror
     <textarea name="content" class="textarea textarea-secondary" rows="6" cols="50" placeholder="Conteudo do post...">{{ old('content') ?? $post->content }}</textarea>
+    @error('banner')
+      <div class="text-red-500">{{ $message }}</div>
+    @enderror
+    <input type="file" name="banner" class="file-input file-input-bordered file-input-secondary w-full max-w-xs" value="{{ old('banner') ?? $post->banner }}" />
     <button class="btn btn-primary w-60" type="submit">Update</button>
     <button type="button" class="btn btn-outline btn-error w-32 btn-sm" onclick="my_modal_1.showModal()">Deletar post</button>
     </div>

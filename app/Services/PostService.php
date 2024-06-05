@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\PostService;
+namespace App\Services;
 
 use App\Repositories\PostRepository;
 

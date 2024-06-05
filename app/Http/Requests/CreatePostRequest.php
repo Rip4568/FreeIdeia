@@ -25,7 +25,7 @@ class CreatePostRequest extends FormRequest
             'title' => 'required|min:3',
             'content' => 'nullable',
             'user_id' => 'required',//quem coloca é o middleware (add.user.id)
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'banner' => 'nullable|max:12048',
         ];
     }
 }

@@ -2,10 +2,10 @@
 
 @section('content')
     <div role="tablist" class="tabs tabs-bordered justify-center relative">
-        <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Perfil" checked />
-        <div role="tabpanel" class="tab-content w-full">
+        <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Meu Perfil" checked />
+        <div role="tabpanel" class="tab-content w-full min-h-screen">
             <div class="flex flex-col items-center justify-center min-h-screen">
-                <div class="max-w-md w-full bg-neutral rounded-lg shadow-lg p-6">
+                <div class="w-full bg-neutral rounded-lg shadow-lg p-6">
                     <div class="flex items-center justify-between mb-6">
                         <h2 class="text-2xl font-bold">Perfil de Usuário</h2>
                         <a href="{{ route('users.edit', $user) }}" class="text-indigo-600 hover:text-indigo-900">

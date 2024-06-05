@@ -3,7 +3,7 @@
 @section('title', 'Crie seu post!')
 
 @section('content')
-<form action="{{ route('posts.store') }}" method="POST">
+<form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
   @csrf
   <div class="artboard-demo p-4 gap-2 min-h-screen">
     @error('title')

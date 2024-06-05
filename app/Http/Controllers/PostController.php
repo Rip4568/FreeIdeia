@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
+use App\Services\PostService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,6 +14,13 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    private $postService;
+    
+    public function __construct(PostService $postService)
+    {
+        $this->postService = $postService;
+    }
     public function index(Request $request)
     {
         $user = Auth::user();
@@ -43,7 +51,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        $user = Auth::user();
+        return view('posts.create', ['user' => $user]);
     }
 
     /**
@@ -52,7 +61,8 @@ class PostController extends Controller
     public function store(CreatePostRequest $request)
     {
         $validated = $request->validated();
-        Post::create($validated);
+
+        $post = $this->postService->create($validated);
         return redirect()->route('posts.create')->with('success', 'Posts criado com sucesso.');
     }
 
@@ -61,12 +71,13 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        $user = Auth::user();
         $post->load('comments');
         $following_users = auth()->user()->following;
         $data = [
             'post' => $post,
-            'following_users' => $following_users
+            'following_users' => $following_users,
+            'user' => $user,
         ];
         return view('posts.show', $data);
     }
@@ -76,7 +87,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('posts.edit', ['post' => $post]);
+        $user = Auth::user();
+        return view('posts.edit', ['post' => $post, 'user' => $user]);
     }
 
     /**
@@ -85,7 +97,7 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request, Post $post)
     {
         $validated = $request->validated();
-        $post->update($validated);
+        $post = $this->postService->update($post->id, $validated);
         return redirect()->route('posts.show', ['post' => $post])->with('success', 'Post atualizado com sucesso.');
     }
 

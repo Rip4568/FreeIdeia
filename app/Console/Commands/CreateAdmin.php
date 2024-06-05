@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Events\NotificationEvent;
+use App\Events\WelcomeNotificationEvent;
 use App\Listeners\NotificationListener;
 use App\Models\User;
 use Illuminate\Console\Command;
@@ -49,7 +50,7 @@ class CreateAdmin extends Command
         $user->is_admin = true;
         $user->save();
 
-        NotificationEvent::dispatch($user);
+        event(new WelcomeNotificationEvent($user));
 
         $this->info('Admin created' . PHP_EOL . 'Email: ' . $email . PHP_EOL . 'Password: ' . $password);
     }

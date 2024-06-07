@@ -52,3 +52,16 @@
     </div>
   </div>
 </div>
+
+@if (Auth::check())
+  <script>
+    document.addEventListener('DOMContentLoaded', (documentEvent) => {
+      const logo = document.getElementById('logo');
+      logo.addEventListener('click', async (event) => {
+        event.preventDefault();
+        const response = await window.axios.get('{{ route('notifications.welcome.test') }}');
+        console.log(response);
+      });
+    })
+  </script>
+@endif

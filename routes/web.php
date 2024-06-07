@@ -70,7 +70,6 @@ Route::post('/login', [UserController::class, 'login'])
 Route::get('/login', [UserController::class, 'showLogin'])
     ->name('users.showLogin');
 
-Route::get('/logindAndSignup', [UserController::class,'logindAndSignup']);
 
 Route::resource('users', UserController::class);
 

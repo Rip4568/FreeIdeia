@@ -9,11 +9,12 @@
       <h1 class="text-5xl text-center">{{ $post->title }}</h1>
       <br>
       <p>Por: <i><a href="#todos-os-posts-deste-usuario">{{ $post->user->name }}</a></i>
-        @if (Auth::user()->id !== $post->user_id)
+      @if (Auth::user()->id !== $post->user_id)
         @if ($following_users->contains($post->user_id))
-             <button class="btn btn-error btn-sm">Deixa de seguir</button>   
+            <a class="btn btn-error btn-sm" href="{{ route('unfollow', ['user' => $post->user_id]) }}">Deixa de seguir</a>
         @else
-            <button class="btn btn-primary btn-sm">Seguir</button>
+            {{-- <button class="btn btn-primary btn-sm">Seguir</button> --}}
+            <a class="btn btn-primary btn-sm" href="{{ route('follow', ['user' => $post->user_id]) }}">Seguir</a>
         @endif
       @endif
       </p>

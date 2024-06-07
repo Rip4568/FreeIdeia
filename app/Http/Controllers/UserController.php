@@ -56,7 +56,6 @@ class UserController extends Controller
 
     public function index()
     {
-        //
         return response()->json(
             ["data" => User::all()]
         );
@@ -81,12 +80,16 @@ class UserController extends Controller
 
         event(new WelcomeNotificationEvent($user));
 
-        return redirect()
+        Auth::login($user);
+
+        return redirect()->route('welcome');
+
+        /* return redirect()
             ->route('users.showLogin')
             ->with(
                 'success',
                 'Conta criada com sucesso. Faça o login para acessar.'
-            );
+            ); */
     }
 
     /**
@@ -94,7 +97,12 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('users.show', ['user' => $user]);
+        $followers = $user->followers;
+        $following = $user->following;
+        $posts = $user->posts;
+        $comments = $user->comments;
+
+        return view('users.show', compact('user', 'followers', 'following', 'posts'));
     }
 
     /**

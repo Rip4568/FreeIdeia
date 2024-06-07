@@ -18,7 +18,7 @@
                         <label class="block font-bold mb-2" for="name">
                             Nome
                         </label>
-                        <input type="text" value="{{ $user->name }}" class=" input input-bordered" >
+                        <input type="text" value="{{ $user->name }}" class=" input input-bordered ">
                     </div>
                     <div class="mb-4">
                         <label class="block font-bold mb-2" for="email">
@@ -38,8 +38,8 @@
                                 Repita a Senha:
                             </label>
                             <input type="text" name="password_confirmation" id="" class="input input-bordered" placeholder="Repita a Senha" required>
-
-                            <input type="submit" value="Resetar Senha" class="btn btn-primary">
+                            <br>
+                            <input type="submit" value="Resetar Senha" class="btn btn-primary mt-3">
                         </form>
                     </div>
                     <div class="flex justify-between">
@@ -55,7 +55,31 @@
         <div role="tabpanel" class="tab-content p-10 min-h-screen">Tab content 2</div>
 
         <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Minhas Ideias" />
-        <div role="tabpanel" class="tab-content p-10 min-h-screen">Tab content 3</div>
+        <div role="tabpanel" class="tab-content p-10 min-h-screen">
+            @forelse ($posts as $post)
+                <li>{{ $post->title }}</li>
+            @empty
+                <p>Você não tem post.</p>
+            @endforelse
+        </div>
+
+        <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Meus Seguidores" />
+        <div role="tabpanel" class="tab-content p-10 min-h-screen">
+            @forelse ($followers as $follower)
+                <li>{{ $follower->name }}</li>
+            @empty
+                <p>Você não tem seguidores.</p>
+            @endforelse
+        </div>
+
+        <input type="radio" name="my_tabs_1" role="tab" class="tab" aria-label="Quem sigo" />
+        <div role="tabpanel" class="tab-content p-10 min-h-screen">
+            @forelse ($following as $follower)
+                {{ $follower->name }}
+            @empty
+                <p>Você não tem seguido nenhum usuário.</p>
+            @endforelse
+        </div>
     </div>
 
     <script>

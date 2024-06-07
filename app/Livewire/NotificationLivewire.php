@@ -12,7 +12,6 @@ class NotificationLivewire extends Component
     public $notifications;
     public $user;
 
-
     public function mount()
     {
         $this->user = Auth::user();
@@ -41,7 +40,6 @@ class NotificationLivewire extends Component
         $this->loadNotifications();
     }
 
-    
     public function render()
     {
         return view('livewire.notification-livewire');

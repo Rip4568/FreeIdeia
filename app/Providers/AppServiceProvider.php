@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Repositories\LikeRepository;
 use App\Repositories\PostRepository;
 use App\Repositories\UserRespository;
-use App\Services\PostService\PostService;
+use App\Services\LikeService;
+use App\Services\PostService;
 use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,6 +29,14 @@ class AppServiceProvider extends ServiceProvider
         });
         $this->app->singleton(PostService::class, function ($app) {
             return new PostService($app->make(PostRepository::class));
+        });
+
+        $this->app->singleton(LikeService::class, function ($app) {
+            return new LikeService($app->make(PostRepository::class));
+        });
+
+        $this->app->singleton(LikeRepository::class, function ($app) {
+            return new LikeRepository();
         });
     }
 

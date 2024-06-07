@@ -31,5 +31,6 @@ class NotificationListener implements ShouldQueue
       'title' => $event->title,
       'message' => $event->message
     ]);
+    /* broadcast(new NotificationEvent($event->user, $event->title, $event->message, $event->type)); */
   }
 }

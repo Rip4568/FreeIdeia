@@ -49,4 +49,11 @@ class NotificationEvent implements ShouldBroadcastNow
             new Channel('notifications.' . $this->user->id),
         ];
     }
+
+    public function brodacastWith()
+    {
+        return [
+            new NotificationEvent($this->user, $this->title, $this->message, $this->type),
+        ];
+    }
 }

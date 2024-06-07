@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\Post;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -24,7 +23,6 @@ class PostRepository
   {
     $data['slug'] = $this->generateUniqueSlug($data['title']);
 
-    Log::debug($data);
     if (isset($data['banner']) && $data['banner'] instanceof UploadedFile) {
       $bannerValidated = Storage::disk('public')->put('banners', $data['banner']);
       $data['banner'] = $bannerValidated;

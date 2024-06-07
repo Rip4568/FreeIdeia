@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
+use App\Policies\PostPolicy;
 use App\Services\PostService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,7 @@ class PostController extends Controller
      */
 
     private $postService;
-    
+
     public function __construct(PostService $postService)
     {
         $this->postService = $postService;
@@ -25,11 +26,11 @@ class PostController extends Controller
     {
         $user = Auth::user();
         $search = $request->input('search') ?? null;
-        $posts = Post::when($search, function ($query) use ($search)  {
+        $posts = Post::when($search, function ($query) use ($search) {
             return $query->where(function ($query) use ($search) {
                 $query->where('title', 'like', '%' . strtolower($search) . '%')
-                ->orWhere('title', 'like', '%' . strtoupper($search) . '%')
-                ->orWhere('content', 'like', '%' . $search . '%');
+                    ->orWhere('title', 'like', '%' . strtoupper($search) . '%')
+                    ->orWhere('content', 'like', '%' . $search . '%');
             });
         })->orderBy('created_at', 'desc')
             ->with('user')
@@ -52,6 +53,7 @@ class PostController extends Controller
     public function create()
     {
         $user = Auth::user();
+        $this->authorize('create', Post::class);
         return view('posts.create', ['user' => $user]);
     }
 
@@ -60,8 +62,8 @@ class PostController extends Controller
      */
     public function store(CreatePostRequest $request)
     {
+        /* $this->authorize('create', Post::class); */
         $validated = $request->validated();
-
         $post = $this->postService->create($validated);
         return redirect()->route('posts.create')->with('success', 'Posts criado com sucesso.');
     }
@@ -72,6 +74,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
         $user = Auth::user();
+        $this->authorize('view', $post);
         $post->load('comments');
         $following_users = auth()->user()->following;
         $data = [
@@ -88,6 +91,7 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $user = Auth::user();
+        $this->authorize('update', $post);
         return view('posts.edit', ['post' => $post, 'user' => $user]);
     }
 
@@ -96,6 +100,7 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
+        $this->authorize('update', $post);
         $validated = $request->validated();
         $post = $this->postService->update($post->id, $validated);
         return redirect()->route('posts.show', ['post' => $post])->with('success', 'Post atualizado com sucesso.');
@@ -106,6 +111,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        $this->authorize('delete', $post);
         $post->delete();
         return redirect()->route('welcome')->with('success', 'Post deletado com sucesso.');
     }

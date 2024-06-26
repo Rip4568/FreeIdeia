@@ -21,6 +21,7 @@ class PostFactory extends Factory
       'user_id' => $user->id,
       'title' => $this->faker->sentence(),
       'content' => $this->faker->paragraph(),
+      'banner' => $this->faker->imageUrl(),
     ];
   }
 }

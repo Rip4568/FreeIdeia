@@ -23,7 +23,7 @@ class User extends Authenticatable // implements MustVerifyEmail
         'password',
         'avatar',
     ];
-    
+
 
     public function posts()
     {
@@ -52,7 +52,8 @@ class User extends Authenticatable // implements MustVerifyEmail
         return $this->load('following');
     }
 
-    public function notifications() {
+    public function notifications()
+    {
         return $this->hasMany(Notification::class);
     }
 

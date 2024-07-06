@@ -3,23 +3,82 @@
 namespace App\Repositories;
 
 use App\Models\Post;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class PostRepository
+class PostRepository extends Repository
 {
+  public function getModelClass(): string
+  {
+    return Post::class;
+  }
+
   public function all()
   {
-    return Post::orderBy('created_at', 'desc')->get();
+    return parent::all()->orderBy('created_at', 'desc')->get();
   }
 
-  public function find(string $id)
+  public function find(int $id): ?Post
   {
-    return Post::find($id);
+    return parent::find($id);
   }
 
-  public function create(array $data)
+
+  public function index(
+    ?array $with = ['user', 'comments'],
+    ?string $text = null,
+    ?int $userId = null,
+    $orderByColumn = 'created_at',
+    $orderByDirection = 'desc',
+  ) {
+    $query = Post::query()->with($with);
+
+    if ($text) {
+      $query->where(function ($q) use ($text) {
+        $q->where('title', 'like', "%{$text}%")
+          ->orWhere('content', 'like', "%{$text}%");
+      });
+    }
+
+    if ($userId) {
+      $query->where('user_id', $userId);
+    }
+
+    return $query
+      ->orderBy($orderByColumn, $orderByDirection)
+      ->get();
+  }
+
+
+  public function paginatePosts(
+    ?array $with = ['user', 'comments'],
+    ?string $text = null,
+    ?int $userId = null,
+    $orderByColumn = 'created_at',
+    $orderByDirection = 'desc',
+    $paginatePerItem = 15
+  ) {
+    $query = Post::query()->with($with);
+
+    if ($text) {
+      $query->where(function ($q) use ($text) {
+        $q->where('title', 'like', "%{$text}%")
+          ->orWhere('content', 'like', "%{$text}%");
+      });
+    }
+
+    if ($userId) {
+      $query->where('user_id', $userId);
+    }
+
+    return $query
+      ->orderBy($orderByColumn, $orderByDirection)
+      ->paginate($paginatePerItem);
+  }
+
+  public function create(array $data): Post
   {
     $data['slug'] = $this->generateUniqueSlug($data['title']);
 
@@ -28,27 +87,27 @@ class PostRepository
       $data['banner'] = $bannerValidated;
     }
 
-    return Post::create($data);
+    return parent::create($data);
   }
 
-  public function update(string $id, array $data)
+  public function update($id, array $data): Post
   {
     if (isset($data['title'])) {
       $data['slug'] = $this->generateUniqueSlug($data['title']);
     }
 
-    if(isset($data['banner']) && $data['banner'] instanceof UploadedFile) {
+    if (isset($data['banner']) && $data['banner'] instanceof UploadedFile) {
       Storage::delete($data['banner']);
       $bannerUpdated = $data['banner']->store('banners', 'public');
       $data['banner'] = $bannerUpdated;
     }
-    
-    return Post::where('id', $id)->update($data);
+
+    return parent::update($id, $data);
   }
 
-  public function delete(string $id)
+  public function delete(int $id): bool
   {
-    return Post::where('id', $id)->delete();
+    return parent::delete($id);
   }
 
   static private function generateUniqueSlug($title)
@@ -57,7 +116,7 @@ class PostRepository
     $originalSlug = $slug;
     $count = 2;
 
-    while (Post::where('slug', $slug)->exists()) {
+    while (Post::whereSlug($slug)->exists()) {
       $slug = $originalSlug . '-' . $count++;
     }
 

@@ -7,10 +7,25 @@ use App\Repositories\PostRepository;
 class PostService
 {
   private PostRepository $postRespository;
-  
+
   public function __construct(PostRepository $postRespository)
   {
     $this->postRespository = $postRespository;
+  }
+
+
+  public function index(
+    ?array $with = ['user', 'comments'],
+    ?string $text = null,
+    ?string $orderByColumn = 'created_at',
+    ?string $orderByDirection = 'desc',
+  ) {
+    return $this->postRespository->index(
+      with: $with,
+      text: $text,
+      orderByColumn: $orderByColumn,
+      orderByDirection: $orderByDirection
+    );
   }
 
   public function create(array $data)

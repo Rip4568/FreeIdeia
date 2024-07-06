@@ -12,7 +12,7 @@ class Post extends Model
         "title",
         "content",
         "user_id",
-        "banner"
+        "banner" // path
     ];
 
     protected $appends = ['banner_url'];

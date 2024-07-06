@@ -10,6 +10,8 @@ use App\Services\PostService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use function Laravel\Prompts\search;
+
 class PostController extends Controller
 {
     /**
@@ -24,24 +26,25 @@ class PostController extends Controller
     }
     public function index(Request $request)
     {
-        $user = Auth::user();
-        $search = $request->input('search') ?? null;
-        $posts = Post::when($search, function ($query) use ($search) {
-            return $query->where(function ($query) use ($search) {
-                $query->where('title', 'like', '%' . strtolower($search) . '%')
-                    ->orWhere('title', 'like', '%' . strtoupper($search) . '%')
-                    ->orWhere('content', 'like', '%' . $search . '%');
-            });
-        })->orderBy('created_at', 'desc')
-            ->with('user')
-            ->paginate(12);
+        $text = $request->input('search', null);
+        $userId = $request->input('user_id', null);
+        $orderByColumn = $request->input('order_by_column', 'created_at');
+        $orderByDirection = $request->input('order_by_direction', 'desc');
 
-        $following_users = auth()->user()->following;
+        $posts = $this->postService->index(
+            with: ['user', 'comments'],
+            text: $text,
+            orderByColumn: $orderByColumn,
+            orderByDirection: $orderByDirection
+        );
+
+        $user = Auth::user();
+        $following_users = $user->following;
         $data = [
             "posts" => $posts,
             "status" => 200,
             "following_users" => $following_users,
-            "search" => $search,
+            "search" => $text,
             "user" => $user,
         ];
         return view('posts.index', $data);
@@ -62,9 +65,8 @@ class PostController extends Controller
      */
     public function store(CreatePostRequest $request)
     {
-        /* $this->authorize('create', Post::class); */
         $validated = $request->validated();
-        $post = $this->postService->create($validated);
+        $this->postService->create($validated);
         return redirect()->route('posts.create')->with('success', 'Posts criado com sucesso.');
     }
 
@@ -112,16 +114,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $this->authorize('delete', $post);
-        $post->delete();
+        $this->postService->delete($post->id);
         return redirect()->route('welcome')->with('success', 'Post deletado com sucesso.');
-    }
-
-    public function search(Request $request)
-    {
-        $search = $request->input('search');
-        $posts = Post::where('title', 'like', '%' . $search . '%')
-            ->orWhere('content', 'like', '%' . $search . '%')
-            ->paginate(6);
-        return view('welcome', ['posts' => $posts]);
     }
 }

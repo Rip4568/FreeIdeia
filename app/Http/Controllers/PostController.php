@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Policies\PostPolicy;
 use App\Services\PostService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,10 +20,15 @@ class PostController extends Controller
      */
 
     private $postService;
+    private $userService;
 
-    public function __construct(PostService $postService)
+    public function __construct(
+        PostService $postService,
+        UserService $userService
+        )
     {
         $this->postService = $postService;
+        $this->userService = $userService;
     }
     public function index(Request $request)
     {
@@ -116,5 +122,15 @@ class PostController extends Controller
         $this->authorize('delete', $post);
         $this->postService->delete($post->id);
         return redirect()->route('welcome')->with('success', 'Post deletado com sucesso.');
+    }
+
+    public function postsByUser(Request $request, string $username)
+    {
+        $user = $this->userService->getBy(with: ['posts'], username: $username);
+        if (!$user) {
+            return redirect()->route('welcome')->with('error', 'Usuário não encontrado.');
+        }
+        $posts = $user->posts;
+        return view('posts.index', compact('posts', 'user'));
     }
 }

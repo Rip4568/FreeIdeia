@@ -26,6 +26,6 @@
   @endforeach
 </section>
 
-{{ $posts->appends(['search' => request()->input('search')])->links() }}
+{{-- {{ $posts->appends(['search' => request()->query('search')])->links() }} --}}
 
 @endsection

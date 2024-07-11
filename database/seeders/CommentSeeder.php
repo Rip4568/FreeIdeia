@@ -19,10 +19,13 @@ class CommentSeeder extends Seeder
         $posts = Post::all()
             ?? 
             Post::factory()->count(5)->create();
+        $users = User::all()
+            ?? 
+            User::factory()->count(5)->create();
         foreach ($posts as $post) {
             Comment::factory()->count(10)->create([
                 'post_id' => $post->id,
-                'user_id' => User::inRandomOrder()->first()->id,
+                'user_id' => $users->random()->id,
             ]);
         }
     }

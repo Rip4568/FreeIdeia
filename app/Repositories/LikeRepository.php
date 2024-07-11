@@ -17,34 +17,27 @@ class LikeRepository
    * @param string $postId O ID da postagem.
    * @return \Illuminate\Database\Eloquent\Collection
    */
-  public function all(string $userId, string $postId)
-  {
-    return Like::where('user_id', $userId)
-      ->where('post_id', $postId)
-      ->get();
-  }
+  public function index(
+    ?string $userId = null,
+    ?string $postId = null,
+    ?array $with = ['user', 'post'],
+    ?string $orderByColumn = 'post_id',
+    ?string $orderByDirection = 'asc'
+  ) {
+    $query = Like::query()->with($with);
+    $likesByPost = $query->withCount('post');
+    $likesByUser = $query->withCount('user');
 
-  /**
-   * Obtém todos os likes de um usuário específico.
-   *
-   * @param string $userId O ID do usuário.
-   * @return \Illuminate\Database\Eloquent\Collection
-   */
-  public function allByUser(string $userId)
-  {
-    return Like::where('user_id', $userId)
-      ->get();
-  }
+    if ($userId) {
+      $query->where('user_id', $userId);
+    }
 
-  /**
-   * Obtém todos os likes de uma postagem específica.
-   *
-   * @param string $postId O ID da postagem.
-   * @return \Illuminate\Database\Eloquent\Collection
-   */
-  public function allByPost(string $postId)
-  {
-    return Like::where('post_id', $postId)
+    if ($postId) {
+      $query->where('post_id', $postId);
+    }
+
+    return $query
+      ->orderBy($orderByColumn, $orderByDirection)
       ->get();
   }
 

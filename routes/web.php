@@ -76,6 +76,8 @@ Route::resource('users', UserController::class);
 Route::resource('posts', PostController::class)
     ->middleware(['auth', 'add.user.id', 'increment.post.clicked']);
 
+Route::get('/posts-by/{username}', [PostController::class, 'postsByUser']);
+
 Route::resource('posts.comments', CommentController::class)
     ->only(['store', 'destroy', 'update'])
     ->middleware(['auth', 'add.user.id']);

@@ -6,14 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class Repository
 {
-  protected string $model;
-
-  public function __construct()
-  {
-    $this->model = $this->getModelClass();
-  }
-
-  abstract protected function getModelClass(): string;
+  protected string $model = Model::class;
 
   public function create(array $data): Model
   {
@@ -47,5 +40,41 @@ abstract class Repository
   public function all()
   {
     return $this->model::all();
+  }
+
+  public function getBy(array $criteria, array $orderBy = [], int $perPage = null)
+  {
+    $query = $this->model->query();
+
+    foreach ($criteria as $field => $value) {
+      $method = $this->getQueryMethod($field);
+      $query->$method($field, $value);
+    }
+
+    foreach ($orderBy as $field => $direction) {
+      $query->orderBy($field, $direction);
+    }
+
+    return $perPage ? $query->paginate($perPage) : $query->get();
+  }
+
+  protected function getQueryMethod(string $field): string
+  {
+    $customMethods = $this->getCustomQueryMethods();
+    return $customMethods[$field] ?? 'where';
+  }
+
+  protected function getCustomQueryMethods(): array
+  {
+    return [
+      'name' => 'whereLike',
+      'email' => 'whereLike',
+      'created_at' => 'whereDate',
+    ];
+  }
+
+  public function scopeWhereLike($query, $field, $value)
+  {
+    return $query->where($field, 'LIKE', "%{$value}%");
   }
 }

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Notification;
+use App\Models\User;
 use Database\Factories\NotificationFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,8 +15,11 @@ class NotificationSeeder extends Seeder
      */
     public function run(): void
     {
-        //para cada usuario registrado no banco de dados
-        //registre 3 notificações para cada um deles
-        Notification::factory(10)->create();
+        $users = User::all();
+        foreach ($users as $user) {
+            Notification::factory()->count(10)->create([
+                'user_id' => $user->id,
+            ]);
+        }
     }
 }

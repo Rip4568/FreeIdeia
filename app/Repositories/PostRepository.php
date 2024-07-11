@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Post;
+use App\Services\StorageService;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -10,6 +11,12 @@ use Illuminate\Support\Str;
 
 class PostRepository extends Repository
 {
+  private $storageService;
+  
+  public function __construct() {
+    $this->storageService = new StorageService();
+  }
+
   public function getModelClass(): string
   {
     return Post::class;
@@ -51,6 +58,26 @@ class PostRepository extends Repository
       ->get();
   }
 
+  public function  getBy(array $criteria = [
+    'title' => null,
+  'content' => null,
+  'user_id' => null
+  ],
+  array $orderBy = ['created_at','desc'], 
+  ?int $perPage = null)
+  {
+    return parent::getBy($criteria, $orderBy, $perPage);
+  }
+
+  public function getCustomQueryMethods(): array
+  {
+    return array_merge(parent::getCustomQueryMethods(), [
+      'title' => 'whereLike',
+      'content' => 'whereLike',
+      //'user_id' => 'where', //user_id will be find using where by default
+    ]);
+  }
+
 
   public function paginatePosts(
     ?array $with = ['user', 'comments'],
@@ -63,8 +90,9 @@ class PostRepository extends Repository
     $query = Post::query()->with($with);
 
     if ($text) {
-      $query->where(function ($q) use ($text) {
-        $q->where('title', 'like', "%{$text}%")
+      $query->where(function ($queryBuilder) use ($text) {
+        $queryBuilder
+          ->where('title', 'like', "%{$text}%")
           ->orWhere('content', 'like', "%{$text}%");
       });
     }
@@ -83,12 +111,13 @@ class PostRepository extends Repository
     $data['slug'] = $this->generateUniqueSlug($data['title']);
 
     if (isset($data['banner']) && $data['banner'] instanceof UploadedFile) {
-      $bannerValidated = Storage::disk('public')->put('banners', $data['banner']);
-      $data['banner'] = $bannerValidated;
+      $data['banner'] = $this->storageService->storeFile($data['banner'], StorageService::STORAGE_PATH_POSTS_BANNERS);
     }
 
     return parent::create($data);
   }
+
+  
 
   public function update($id, array $data): Post
   {

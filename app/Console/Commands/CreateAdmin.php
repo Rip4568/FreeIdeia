@@ -31,6 +31,7 @@ class CreateAdmin extends Command
     public function handle()
     {
         $name = $this->ask('Qual é o seu nome?');
+        $username = $this->ask('Qual é o seu username?');
         $email = $this->ask('Qual é o seu email?');
         $password = $this->secret('Digite a senha');
         $password_confirmation = $this->secret('Confirme sua senha ...');
@@ -43,6 +44,7 @@ class CreateAdmin extends Command
         $user = User::create([
             'name' => $name,
             'email' => $email,
+            'username' => $username,
             'is_admin' => true,
             'password' => Hash::make($password),
         ]);

@@ -15,6 +15,25 @@ class UserService
     $this->userRepository = $userRepository;
   }
 
+
+  public function getBy(
+    array $with,
+    string $username = null,
+    string $name = null,
+    string $email = null,
+    string $orderByColumn = 'created_at',
+    string $orderByDirection = 'desc'
+  ) {
+    return $this->userRepository->getBy(
+      with: $with,
+      username: $username,
+      name: $name,
+      email: $email,
+      orderByColumn: $orderByColumn,
+      orderByDirection: $orderByDirection
+    );
+  }
+
   public function create(array $data)
   {
     if (isset($data['password'])) {
@@ -45,5 +64,4 @@ class UserService
   {
     return $this->userRepository->all();
   }
-
 }

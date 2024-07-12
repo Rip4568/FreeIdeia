@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\PostsResource\Pages;
+namespace App\Filament\Resources\PostResource\Pages;
 
-use App\Filament\Resources\PostsResource;
+use App\Filament\Resources\PostResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditPosts extends EditRecord
+class EditPost extends EditRecord
 {
-    protected static string $resource = PostsResource::class;
+    protected static string $resource = PostResource::class;
 
     protected function getHeaderActions(): array
     {
@@ -16,5 +16,4 @@ class EditPosts extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-
 }
